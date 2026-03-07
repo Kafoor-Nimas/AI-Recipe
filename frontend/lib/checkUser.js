@@ -54,5 +54,64 @@ export const checkUser = async () => {
       }
       return { ...existingUser, subscriptionTier };
     }
-  } catch (error) {}
+    // if user does not exist inside database
+    // Create new user in Strapi
+
+    // Get authenticated role
+
+    const rolesResponse = await fetch(
+      `${STRAPI_URL}/api/users-permissions/roles`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+      },
+    );
+
+    const rolesData = await rolesResponse.json();
+    const authenticatedRole = rolesData.roles.find(
+      (role) => role.type === "authenticated",
+    );
+
+    if (!authenticatedRole) {
+      console.error("Authenticated role not found");
+      return null;
+    }
+
+    const userData = {
+      username:
+        user.username || user.emailAddresses[0].emailAddress.split("@")[0],
+      email: user.emailAddresses[0].emailAddress,
+      password: `clerk_managed_${user.id}_${Date.now()}`,
+      confirmed: true,
+      blocked: false,
+      role: authenticatedRole.id,
+      clerkId: user.id,
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      imageUrl: user.imageUrl || "",
+      subscriptionTier,
+    };
+
+    const newUserResponse = await fetch(`${STRAPI_URL}/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!newUserResponse.ok) {
+      const errorText = await newUserResponse.text();
+      console.error("Error creating user:", errorText);
+      return null;
+    }
+
+    const newUser = await newUserResponse.json();
+    return newUser;
+  } catch (error) {
+    console.error("Error in checkUser:", error.message);
+    return null;
+  }
 };
