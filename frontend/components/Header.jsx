@@ -5,9 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Refrigerator, Cookie } from "lucide-react";
 import UserDropDown from "./UserDropDown";
+import { checkUser } from "@/lib/checkUser";
 
 const Header = async () => {
-  const user = null; // Replace with actual user fetching logic
+  const user = await checkUser(); // Replace with actual user fetching logic
   return (
     <header className="fixed top-0 w-full border-b border-stone-200 bg-stone-50/80 backdrop-blur-md z-50 supports-backdrop-filter:bg-stone-50/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -54,7 +55,7 @@ const Header = async () => {
           </Show>
           <Show when="signed-in">
             {/* How to Cook */}
-           <UserDropDown/>
+            <UserDropDown />
           </Show>
         </div>
       </nav>
