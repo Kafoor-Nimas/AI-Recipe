@@ -37,7 +37,8 @@ export const checkUser = async () => {
       return null;
     }
 
-    const existingUserData = await existingUserResponse.jaon();
+    const existingUserData = await existingUserResponse.json();
+
 
     if (existingUserData.length > 0) {
       const existingUser = existingUserData[0];
