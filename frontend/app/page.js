@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { PricingTable } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function Home() {
@@ -8,6 +9,17 @@ export default function Home() {
         <Button variant="primary" size="xl">
           Subscribe
         </Button>
+        <PricingTable
+          checkoutProps={{
+            appearance: {
+              elements: {
+                drawerRoot: {
+                  zIndex: 2000,
+                },
+              },
+            },
+          }}
+        />
       </section>
     </div>
   );
