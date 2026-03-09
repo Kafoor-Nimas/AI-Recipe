@@ -1,3 +1,4 @@
+import PricingSection from "@/components/PricingSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -208,13 +209,20 @@ export default async function Home() {
                       </div>
                     </div>
                   </div>
-                    {index < HOW_IT_WORKS_STEPS.length - 1 && (
-                      <hr className="my-8 bg-stone-700" />
-                    )}
+                  {index < HOW_IT_WORKS_STEPS.length - 1 && (
+                    <hr className="my-8 bg-stone-700" />
+                  )}
                 </div>
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Pricing section */}
+      <section className="py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <PricingSection />
         </div>
       </section>
     </div>
