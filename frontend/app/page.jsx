@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowRight, Flame } from "lucide-react";
+import { ArrowRight, Clock, Flame, Star, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -62,6 +62,45 @@ export default async function Home() {
                 height={500}
                 className="w-full h-full object-cover"
               />
+              <Card
+                className={
+                  "absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-sm border-2 border-stone-900 py-0"
+                }
+              >
+                <CardContent className={"p-4"}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="font-bold text-lg">
+                        Rustic Tomato Basil Pasta
+                      </h3>
+                      <div className="flex gap-0.5 mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="w-3 h-3 fill-orange-500 text-orange-500"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className={
+                        "border-2 border-green-700 bg-green-50 text-green-700 font-bold"
+                      }
+                    >
+                      98% MATCH
+                    </Badge>
+                  </div>
+                  <div className="flex gap-4 text-xs text-stone-500 font-medium">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" /> 25 mins
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users className="w-3 h-3" /> 2 servings
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
             </Card>
           </div>
         </div>
