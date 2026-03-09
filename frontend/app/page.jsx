@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { SITE_STATS } from "@/lib/data";
 import { auth } from "@clerk/nextjs/server";
 import { ArrowRight, Clock, Flame, Star, Users } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +13,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900">
+      {/* Hero section */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
@@ -105,6 +107,29 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Stats section*/}
+      <section className="py-12 border-y-2 border-stone-900 bg-stone-900">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center px-4">
+          {SITE_STATS.map((stat, index) => (
+            <div key={index}>
+              <div className="text-4xl font-bold mb-1 text-stone-50">
+                {stat.val}
+              </div>
+              <Badge
+                variant="secondary"
+                className={
+                  "bg-transparent text-orange-500 text-sm uppercase tracking-wider font-medium border-none"
+                }
+              >
+                {stat.label}
+              </Badge>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
     </div>
   );
 }
