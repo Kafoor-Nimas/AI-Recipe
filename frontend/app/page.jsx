@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FEATURES, SITE_STATS } from "@/lib/data";
+import { FEATURES, HOW_IT_WORKS_STEPS, SITE_STATS } from "@/lib/data";
 import { auth } from "@clerk/nextjs/server";
 import { ArrowRight, Clock, Flame, Star, Users } from "lucide-react";
 import Image from "next/image";
@@ -172,6 +172,46 @@ export default async function Home() {
                     </p>
                   </CardContent>
                 </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Cook in 3 steps section */}
+      <section className="py-24 border-y-2 border-stone-200 bg-stone-900 text-stone-50">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:*:text-6xl font-bold mb-16">
+            Cook in 3 Steps
+          </h2>
+          <div className="space-y-12">
+            {HOW_IT_WORKS_STEPS.map((item, index) => {
+              return (
+                <div key={index}>
+                  <div className="flex gap-6 items-start">
+                    <div>
+                      <Badge
+                        variant="outline"
+                        className={
+                          "text-6xl font-bold text-orange-500 border-none bg-transparent p-0 h-auto"
+                        }
+                      >
+                        {item.step}
+                      </Badge>
+                      <div>
+                        <h3 className="text-2xl font-bold mb-3">
+                          {item.title}
+                        </h3>
+                        <p className="text-lg text-stone-400 font-light">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                    {index < HOW_IT_WORKS_STEPS.length - 1 && (
+                      <hr className="my-8 bg-stone-700" />
+                    )}
+                </div>
               );
             })}
           </div>
