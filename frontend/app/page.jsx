@@ -129,7 +129,20 @@ export default async function Home() {
         </div>
       </section>
 
-      
+      {/* Features section */}
+      <section className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* feature section heading */}
+          <div className="mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4">
+              Your Smart Kitchen
+            </h2>
+            <p className="text-stone-600 text-xl font-light">
+              Everything you need to master your meal prep.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
