@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { SITE_STATS } from "@/lib/data";
+import { FEATURES, SITE_STATS } from "@/lib/data";
 import { auth } from "@clerk/nextjs/server";
 import { ArrowRight, Clock, Flame, Star, Users } from "lucide-react";
 import Image from "next/image";
@@ -140,6 +140,40 @@ export default async function Home() {
             <p className="text-stone-600 text-xl font-light">
               Everything you need to master your meal prep.
             </p>
+          </div>
+          {/* Fetures */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {FEATURES.map((feature, index) => {
+              const IconComponent = feature.icon;
+              return (
+                <Card
+                  key={index}
+                  className={
+                    "border-2 border-stone-200 bg-white hover:border-orange-600 hover:shadow-lg transition-all group py-0"
+                  }
+                >
+                  <CardContent className={"p-8"}>
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="border-2 border-stone-200 bg-orange-50 p-3 group-hover:border-orange-600 group-hover:bg-orange-100 transition-colors">
+                        <IconComponent className="w-6 h-6" />
+                      </div>
+                      <Badge
+                        variant="secondary"
+                        className={
+                          "text-xs font-mono bg-stone-100 text-stone-600 uppercase tracking-wide border border-stone-200"
+                        }
+                      >
+                        {feature.limit}
+                      </Badge>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                    <p className="text-stone-600 text-lg font-light">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
