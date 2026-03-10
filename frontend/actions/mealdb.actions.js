@@ -9,7 +9,7 @@ export async function getRecipeOfTheDay() {
     });
 
     if (!response.ok) {
-      throw new Error("failed to fetch recipe of the day");
+      throw new Error("Failed to fetch recipe of the day");
     }
 
     const data = await response.json();
@@ -24,9 +24,31 @@ export async function getRecipeOfTheDay() {
   }
 }
 
-export async function getCategories() {}
+export async function getCategories() {
+  try {
+    const response = await fetch(`${MEALDB_BASE}/list.php?c=list`, {
+      next: { revalidate: 604800 }, //Cache for 1 week (categories rarely change)
+    });
 
-export async function getAreas() {}
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      categories: data.meals || [],
+    };
+  } catch (error) {
+    console.error("Error fetching categories", error);
+    throw new Error(error.message || "failed to load categories");
+  }
+}
+
+export async function getAreas() {
+    
+}
 
 export async function getMealsByCategory(category) {}
 
