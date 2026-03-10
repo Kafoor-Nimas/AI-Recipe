@@ -91,4 +91,25 @@ export async function getMealsByCategory(category) {
   }
 }
 
-export async function getMealsByArea(area) {}
+export async function getMealsByArea(area) {
+     try {
+    const response = await fetch(`${MEALDB_BASE}/filter.php?a=${area}`, {
+      next: { revalidate: 86400 }, //Cache for 24 hours
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch meals by area");
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      meals: data.meals || [],
+      area,
+    };
+  } catch (error) {
+    console.error("Error fetching meals by area", error);
+    throw new Error(error.message || "failed to load meals by area");
+  }
+}
