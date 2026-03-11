@@ -19,6 +19,9 @@ export async function scanPantryImage(formData){
         }
 
         const isPro = user.subscriptionTier === "pro"
+
+        // Apply Arcjet rate limit based on tier
+        
     } catch (error) {
         
     }
