@@ -5,7 +5,7 @@ import {
 } from "@/actions/mealdb.actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getCategoryEmoji } from "@/lib/data";
+import { getCategoryEmoji, getCountryFlag } from "@/lib/data";
 import { ArrowRight, Flame, Globe } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -127,6 +127,36 @@ const page = async () => {
         </section>
 
         {/* Browse by Cuisine */}
+        <section className="mb-24">
+          <div className="mb-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-2">
+              Explore World Cuisines
+            </h2>
+            <p className="text-stone-600 text-lg font-light">
+              Travel the globe through food
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 ">
+            {areas.map((area) => (
+              <Link
+                key={area.strArea}
+                href={`/recipes/cuisine/${area.strArea.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                <div className="bg-stone-50 p-5 border-2 border-stone-200 hover:border-orange-600 hover:shadow-lg transition-all group cursor-pointer">
+                  <div className="flex items-center">
+                    <span className="text-3xl">
+                      {getCountryFlag(area.strArea)}
+                    </span>
+                    <span className="font-bold text-stone-900 group-hover:text-orange-600 transition-colors text-sm">
+                      {area.strArea}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
