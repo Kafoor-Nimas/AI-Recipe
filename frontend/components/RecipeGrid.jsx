@@ -56,6 +56,34 @@ const RecipeGrid = ({
             <p className="text-stone-500">Loading recipes...</p>
           </div>
         )}
+
+        {!loading && meals.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {meals.map((meal, index) => (
+              <div key={index}>{meal.idMeal}</div>
+            ))}
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && meals.length === 0 && (
+          <div className="text-center py-20">
+            <div className="text-6xl mb-4">🍽️</div>
+            <h3 className="text-2xl font-bold text-stone-900 mb-2">
+              No recipes found
+            </h3>
+            <p className="text-stone-500 mb-6">
+              We couldn&apos;t find any {displayName}{" "}
+              {type === "cuisine" ? "dishes" : "recipes"}.
+            </p>
+            <Link href={backLink}>
+              <span className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold">
+                <ArrowLeft className="w-4 h-4" />
+                Go back to explore more
+              </span>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
