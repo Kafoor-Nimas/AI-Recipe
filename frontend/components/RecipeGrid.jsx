@@ -2,6 +2,7 @@ import useFetch from "@/hooks/use-fetch";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import RecipeCard from "./RecipeCard";
 
 const RecipeGrid = ({
   type, // "category" or "cuisine"
@@ -59,8 +60,8 @@ const RecipeGrid = ({
 
         {!loading && meals.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {meals.map((meal, index) => (
-              <div key={index}>{meal.idMeal}</div>
+            {meals.map((meal) => (
+              <RecipeCard key={meal.idMeal} recipe={meal} variant="grid" />
             ))}
           </div>
         )}
