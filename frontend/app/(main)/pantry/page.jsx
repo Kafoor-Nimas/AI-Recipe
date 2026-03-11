@@ -1,7 +1,15 @@
-import { Package } from "lucide-react";
-import React from "react";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Package, Plus } from "lucide-react";
+import React, { useState } from "react";
 
 const Pantrypage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [items, setItems] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [editValues, setEditValues] = useState({ name: "", quantity: "" });
+
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-4">
       <div className="container mx-auto max-w-5xl">
@@ -18,9 +26,28 @@ const Pantrypage = () => {
                 </p>
               </div>
             </div>
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className={"hidden md:flex"}
+              size="lg"
+              variant="primary"
+            >
+              <Plus className="w-5 h-5" />
+              Add to Pantry
+            </Button>
           </div>
         </div>
+
+        {/* Quick Action Card - Find Recipes */}
+
+        {/* Loading State */}
+
+        {/* Pantry Items Grid */}
+
+        {/* Empty State */}
       </div>
+
+      {/* Add to Pantry Modal */}
     </div>
   );
 };
