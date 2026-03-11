@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  
 } from "@/components/ui/dialog";
 
 const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
@@ -17,7 +17,7 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
   const [manualItem, setManualItem] = useState({ name: "", quantity: "" });
 
   const handleClose = () => {
-    setActiveTab("sacn");
+    setActiveTab("scan");
     setSelectedImage(null);
     setScanIngredients([]);
     setManualItem({ name: "", quantity: "" });
@@ -25,7 +25,7 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
   };
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogTrigger>Open</DialogTrigger>
+      
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>

@@ -1,5 +1,6 @@
 "use client";
 
+import AddToPantryModal from "@/components/AddToPantryModal";
 import { Button } from "@/components/ui/button";
 import { Package, Plus } from "lucide-react";
 import React, { useState } from "react";
@@ -9,6 +10,8 @@ const Pantrypage = () => {
   const [items, setItems] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editValues, setEditValues] = useState({ name: "", quantity: "" });
+
+  const handleModalSuccess = () => {};
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-4">
@@ -48,6 +51,11 @@ const Pantrypage = () => {
       </div>
 
       {/* Add to Pantry Modal */}
+      <AddToPantryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleModalSuccess}
+      />
     </div>
   );
 };
