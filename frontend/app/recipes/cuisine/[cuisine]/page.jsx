@@ -8,10 +8,12 @@ export default function CuisineRecipespage() {
   const params = useParams();
   const cuisine = params.cuisine;
 
-  <RecipeGrid
-    type="cuisine"
-    value={cuisine}
-    fetchAction={getMealsByArea}
-    backLink="/dashboard"
-  />;
+  return (
+    <RecipeGrid
+      type="cuisine"
+      value={cuisine}
+      fetchAction={getMealsByArea}
+      backLink="/dashboard"
+    />
+  );
 }

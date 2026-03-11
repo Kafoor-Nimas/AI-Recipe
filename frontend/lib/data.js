@@ -89,7 +89,7 @@ export function getCountryFlag(country) {
     Filipino: "🌴",
     French: "🥐",
     Greek: "🏛️",
-    Indian: "🪷",
+    Indian: "🪔",
     Irish: "☘️",
     Italian: "🍕",
     Jamaican: "🌴",
@@ -118,5 +118,5 @@ export function getCountryFlag(country) {
     Venezuelan: "🌞",
   };
 
-  return emojiMap[country] ?? "🌍";
+  return emojiMap[country] || "🌍";
 }

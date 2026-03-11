@@ -7,11 +7,12 @@ import { useParams } from "next/navigation";
 export default function CategoryRecipesPage() {
   const params = useParams();
   const category = params.category;
-
-  <RecipeGrid
-    type="category"
-    value={category}
-    fetchAction={getMealsByCategory}
-    backLink="/dashboard"
-  />;
+  return (
+    <RecipeGrid
+      type="category"
+      value={category}
+      fetchAction={getMealsByCategory}
+      backLink="/dashboard"
+    />
+  );
 }
