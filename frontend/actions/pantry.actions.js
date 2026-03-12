@@ -57,7 +57,24 @@ export async function scanPantryImage(formData) {
       model: "gemini-2.5-flash-lite",
     });
 
-    const prompt = ``;
+    const prompt = `You are a professional chef and ingredient recognition expert. Analyze this image of a pantry/fridge and identify all visible food ingredients.
+
+Return ONLY a valid JSON array with this exact structure (no markdown, no explanations):
+[
+  {
+    "name": "ingredient name",
+    "quantity": "estimated quantity with unit",
+    "confidence": 0.95
+  }
+]
+
+Rules:
+- Only identify food ingredients (not containers, utensils, or packaging)
+- Be specific (e.g., "Cheddar Cheese" not just "Cheese")
+- Estimate realistic quantities (e.g., "3 eggs", "1 cup milk", "2 tomatoes")
+- Confidence should be 0.7-1.0 (omit items below 0.7)
+- Maximum 20 items
+- Common pantry staples are acceptable (salt, pepper, oil)`;
 
     const result = await model.generateContent([
       prompt,
@@ -83,5 +100,80 @@ export async function scanPantryImage(formData) {
       console.error("failed to parse gemini response:", text);
       throw new Error("Failed to parse ingredients. Please try again.");
     }
-  } catch (error) {}
+
+    if (!Array.isArray(ingredients) || ingredients.length === 0) {
+      throw new Error(
+        "No ingredients detected in the image. Please try a clearer photo.",
+      );
+    }
+
+    return {
+      success: true,
+      ingredients: ingredients.slice(0, 20),
+      scansLimit: isPro ? "unlimited" : 10,
+      message: `Found ${ingredients.length} ingredients!`,
+    };
+  } catch (error) {
+    console.error("Error scanning pantry:", error);
+    throw new Error(error.message || "failed to scan image");
+  }
 }
+
+export async function saveToPantry(formData) {
+  try {
+    const user = await checkUser();
+
+    if (!user) {
+      throw new Error("User not autheticated");
+    }
+
+    const ingredientsJson = formData.get("ingredients");
+    const ingredients = JSON.parse(ingredientsJson);
+
+    if (!ingredients || ingredients.length === 0) {
+      throw new Error("No ingredients to save");
+    }
+
+    const savedItems = [];
+
+    for (const ingredient of ingredients) {
+      const response = await fetch(`${STRAPI_URL}/api/pantry-items`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        body: JSON.stringify({
+          data: {
+            name: ingredient.name,
+            quantity: ingredient.quantity,
+            imageUrl: "",
+            owner: user.id,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        savedItems.push(data.data);
+      }
+    }
+
+    return {
+      success: true,
+      savedItems,
+      message: `Saved ${savedItems.length} items to your pantry!`,
+    };
+  } catch (error) {
+    console.error("Error saving to pantry:", error);
+    throw new Error(error.message || "Failed to save items");
+  }
+}
+
+export async function addPantryItemManually(formData) {}
+
+export async function getPantryItems(formData) {}
+
+export async function deletePantryItem(formData) {}
+
+export async function updatePantryItem(formData) {}
