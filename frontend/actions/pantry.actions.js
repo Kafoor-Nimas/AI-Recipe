@@ -256,6 +256,33 @@ export async function getPantryItems(formData) {
   }
 }
 
-export async function deletePantryItem(formData) {}
+export async function deletePantryItem(formData) {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const itemId = formData.get("itemId");
+
+    const response = await fetch(`${STRAPI_URL}/api/pantry-items/${itemId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete item");
+    }
+    return {
+      success: true,
+      message: "Item removed from pantry",
+    };
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    throw new Error(error.message || "failed to delete item");
+  }
+}
 
 export async function updatePantryItem(formData) {}
