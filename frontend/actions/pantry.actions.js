@@ -219,7 +219,42 @@ export async function addPantryItemManually(formData) {
   }
 }
 
-export async function getPantryItems(formData) {}
+export async function getPantryItems(formData) {
+  try {
+    const user = await checkUser();
+
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const response = await fetch(
+      `${STRAPI_URL}/api/pantry-items?filter[owner][id][$eq]=${user.id}&sort=createdAt:desc`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        cache: "no-store",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch pantry items");
+    }
+
+    const data = await response.json();
+
+    const isPro = user.subscriptionTier === "pro";
+
+    return {
+      success: true,
+      items: data.data || [],
+      scansLimit: isPro ? "unlimited" : 10,
+    };
+  } catch (error) {
+    console.error("Error fetching pantry:", error);
+    throw new Error(error.message || "Failed to load pantry");
+  }
+}
 
 export async function deletePantryItem(formData) {}
 
