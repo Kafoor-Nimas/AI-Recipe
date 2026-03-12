@@ -285,4 +285,44 @@ export async function deletePantryItem(formData) {
   }
 }
 
-export async function updatePantryItem(formData) {}
+export async function updatePantryItem(formData) {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const itemId = formData.get("itemId");
+    const name = formData.get("name");
+    const quantity = formData.get("quantity");
+
+    const response = await fetch(`${STRAPI_URL}/api/pantry-items/${itemId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+      body: JSON.stringify({
+        data: {
+          name,
+          quantity,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update item");
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      item: data.data,
+      message: "Item updated successfully",
+    };
+  } catch (error) {
+    console.error("Error updating item:", error);
+    throw new Error(error.message || "Failed to update item");
+  }
+}
