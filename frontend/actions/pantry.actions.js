@@ -56,5 +56,32 @@ export async function scanPantryImage(formData) {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-lite",
     });
+
+    const prompt = ``;
+
+    const result = await model.generateContent([
+      prompt,
+      {
+        inlineData: {
+          mimeType: imageFile.type,
+          data: base64Image,
+        },
+      },
+    ]);
+
+    const response = await result.response;
+    const text = response.text();
+
+    let ingredients;
+    try {
+      const cleanText = text
+        .replace(/```json\n?/g, "")
+        .replace(/```\n?/g, "")
+        .trim();
+      ingredients = JSON.parse(cleanText);
+    } catch (error) {
+      console.error("failed to parse gemini response:", text);
+      throw new Error("Failed to parse ingredients. Please try again.");
+    }
   } catch (error) {}
 }
