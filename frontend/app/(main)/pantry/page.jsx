@@ -10,7 +10,7 @@ import PricingModal from "@/components/PricingModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { ChefHat, Package, Plus, Sparkles } from "lucide-react";
+import { ChefHat, Loader2, Package, Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -135,6 +135,12 @@ const Pantrypage = () => {
         )}
 
         {/* Loading State */}
+        {loadingItems && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-12 h-12 text-orange-600 animate-spin mb-4" />
+            <p className="text-stone-500">Loading your pantry...</p>
+          </div>
+        )}
 
         {/* Pantry Items Grid */}
 
