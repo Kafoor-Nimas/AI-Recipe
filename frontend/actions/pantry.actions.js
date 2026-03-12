@@ -170,7 +170,54 @@ export async function saveToPantry(formData) {
   }
 }
 
-export async function addPantryItemManually(formData) {}
+export async function addPantryItemManually(formData) {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const name = formData.get("name");
+    const quantity = formData.get("quantity");
+
+    if (!name || !quantity) {
+      throw new Error("Name and quantity are required");
+    }
+
+    const response = await fetch(`${STRAPI_URL}/api/pantry-items`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+      body: JSON.stringify({
+        data: {
+          name: name.trim(),
+          quantity: quantity.trim(),
+          imageUrl: "",
+          owner: user.id,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("failed to add item:", errorText);
+      throw new Error("failed to add item to pantry");
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      item: data.data,
+      message: "Item added successfully!",
+    };
+  } catch (error) {
+    console.error("Error adding item manually:", error);
+    throw new Error(error.message || "Failed to add item");
+  }
+}
 
 export async function getPantryItems(formData) {}
 
