@@ -42,5 +42,19 @@ export async function scanPantryImage(formData) {
 
       throw new Error("Request denied by security system");
     }
+
+    const imageFile = formData.get("image");
+    if (!imageFile) {
+      throw new Error("No image provided");
+    }
+
+    // Convert image to base 64
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = buffer.toString("base64");
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash-lite",
+    });
   } catch (error) {}
 }
