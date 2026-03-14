@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import {
+  Check,
   ChefHat,
   Edit,
   Loader2,
@@ -18,6 +19,7 @@ import {
   Plus,
   Sparkles,
   Trash2,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -70,6 +72,15 @@ const Pantrypage = () => {
     }
   }, [deleteData]);
 
+  // Refresh after update
+  useEffect(() => {
+    if (updateData?.success) {
+      toast.success("Item updated successfully");
+      setEditingId(null);
+      fetchItems();
+    }
+  }, [updateData]);
+
   //handle delete
   const handleDelete = async (itemId) => {
     const formData = new FormData();
@@ -101,7 +112,9 @@ const Pantrypage = () => {
     setEditValues({ name: "", quantity: "" });
   };
 
-  const handleModalSuccess = () => {};
+  const handleModalSuccess = () => {
+    fetchItems();
+  };
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-4">
@@ -215,7 +228,57 @@ const Pantrypage = () => {
                   className="bg-white p-5 border-2 border-stone-200 hover:border-orange-600 hover:shadow-lg transition-all"
                 >
                   {editingId === item.documentId ? (
-                    <div></div>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={editValues.name}
+                        onChange={(e) =>
+                          setEditValues({ ...editValues, name: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border-2 border-stone-200 focus:outline-none focus:border-orange-600 text-sm"
+                        placeholder="Ingredient name"
+                      />
+                      <input
+                        type="text"
+                        value={editValues.quantity}
+                        onChange={(e) =>
+                          setEditValues({
+                            ...editValues,
+                            quantity: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border-2 border-stone-200 focus:outline-none focus:border-orange-600 text-sm"
+                        placeholder="Quantity"
+                      />
+
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={saveEdit}
+                          disabled={updating}
+                          className={
+                            "flex-1 bg-green-600 hover:bg-green-700 border-2 border-green-700"
+                          }
+                        >
+                          {updating ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Check className="w-4 h-4" />
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={cancelEdit}
+                          disabled={updating}
+                          className={
+                            "flex-1 border-2 border-stone-900 hover:bg-stone-900 hover:text-white"
+                          }
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
                   ) : (
                     <div>
                       <div className="flex items-start justify-between mb-3">
