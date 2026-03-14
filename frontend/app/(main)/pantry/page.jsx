@@ -77,6 +77,30 @@ const Pantrypage = () => {
     await deleteItem(formData);
   };
 
+  // Start editing
+  const startEdit = (item) => {
+    setEditingId(item.documentId);
+    setEditValues({
+      name: item.name,
+      quantity: item.quantity,
+    });
+  };
+
+  // save edit
+  const saveEdit = async () => {
+    const formData = new FormData();
+    formData.append("itemId", editingId);
+    formData.append("name", editValues.name);
+    formData.append("quantity", editValues.quantity);
+    await updateItem(formData);
+  };
+
+  // Cancel edit
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditValues({ name: "", quantity: "" });
+  };
+
   const handleModalSuccess = () => {};
 
   return (
