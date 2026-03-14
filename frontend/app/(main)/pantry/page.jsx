@@ -10,9 +10,18 @@ import PricingModal from "@/components/PricingModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { ChefHat, Loader2, Package, Plus, Sparkles } from "lucide-react";
+import {
+  ChefHat,
+  Edit,
+  Loader2,
+  Package,
+  Plus,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const Pantrypage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,6 +61,21 @@ const Pantrypage = () => {
       setItems(itemsData.items);
     }
   }, [itemsData]);
+
+  // Refresh after delete
+  useEffect(() => {
+    if (deleteData?.success && !deleting) {
+      toast.success("Item removed from pantry");
+      fetchItems();
+    }
+  }, [deleteData]);
+
+  //handle delete
+  const handleDelete = async (itemId) => {
+    const formData = new FormData();
+    formData.append("itemId", itemId);
+    await deleteItem(formData);
+  };
 
   const handleModalSuccess = () => {};
 
@@ -143,6 +167,70 @@ const Pantrypage = () => {
         )}
 
         {/* Pantry Items Grid */}
+        {!loadingItems && items.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-stone-900">
+                Your Ingredients
+              </h2>
+              <Badge
+                variant="outline"
+                className={
+                  "text-stone-600 border-2 border-stone-900 font-bold uppercase tracking-wide"
+                }
+              >
+                {items.length}
+                {items.length === 1 ? " item" : " items"}
+              </Badge>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {items.map((item) => (
+                <div
+                  key={item.documentId}
+                  className="bg-white p-5 border-2 border-stone-200 hover:border-orange-600 hover:shadow-lg transition-all"
+                >
+                  {editingId === item.documentId ? (
+                    <div></div>
+                  ) : (
+                    <div>
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <h3 className="font-bold text-lg text-stone-900 mb-1">
+                            {item.name}
+                          </h3>
+                          <p className="text-stone-500 text-sm font-light">
+                            {item.quantity}
+                          </p>
+                        </div>
+
+                        <div className="flex gap-1">
+                          <Button
+                            onClick={() => startEdit(item)}
+                            variant="ghost"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            onClick={() => handleDelete(item.documentId)}
+                            disabled={deleting}
+                            variant="ghost"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="text-xs text-stone-400">
+                        Added {new Date(item.createdAt).toLocaleDateString()}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Empty State */}
 
