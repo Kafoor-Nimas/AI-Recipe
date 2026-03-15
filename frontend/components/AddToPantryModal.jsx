@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import { Camera, Loader2, Plus } from "lucide-react";
 import useFetch from "@/hooks/use-fetch";
 import { addPantryItemManually, saveToPantry } from "@/actions/pantry.actions";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
   const [activeTab, setActiveTab] = useState("scan");
@@ -42,7 +43,15 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
     fn: addManualItem,
   } = useFetch(addPantryItemManually);
 
-  // 
+  // Handle manual add success
+  useEffect(() => {
+    if (addData?.success) {
+      toast.success("Item added to pantry!");
+      setManualItem({ name: "", quantity: "" });
+      handleClose();
+      if (onSuccess) onSuccess();
+    }
+  }, [addData]);
 
   const handleClose = () => {
     setActiveTab("scan");
@@ -52,7 +61,18 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
     onClose();
   };
 
-  const handleAddManual = () => {};
+  const handleAddManual = async (e) => {
+    e.preventDefault();
+    if (!manualItem.name.trim() || !manualItem.quantity.trim()) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", manualItem.name);
+    formData.append("quantity", manualItem.quantity);
+    await addManualItem(formData);
+  };
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
