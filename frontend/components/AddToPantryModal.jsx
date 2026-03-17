@@ -80,6 +80,22 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
     formData.append("quantity", manualItem.quantity);
     await addManualItem(formData);
   };
+
+  // Scan image
+  const handleScan = async () => {
+    if (!selectedImage) return;
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    await scanImage(formData);
+  };
+
+  // Updates scanned ingredients when scan completes
+  useEffect(() => {
+    if (scanData?.success && scanData?.ingredients) {
+      setScanIngredients(scanData.ingredients);
+      toast.success(`Found ${scanData.ingredients.length} ingredients!`);
+    }
+  }, [scanData]);
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
