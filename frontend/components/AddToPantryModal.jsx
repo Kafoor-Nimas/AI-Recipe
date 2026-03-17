@@ -65,8 +65,8 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
   // Handle Image selection
   const handleImageSelect = (file) => {
     setSelectedImage(file);
-    setScanIngredients([])
-  }
+    setScanIngredients([]);
+  };
 
   const handleAddManual = async (e) => {
     e.preventDefault();
@@ -103,10 +103,38 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="scan" className={"space-y-6 mt-6"}>
-            {scannedIngredients.length === 0 ? <div className="space-y-4">
-              {/* Image uploader */}
-              <ImageUploader onImageSelect={handleImageSelect} loading={scanning}/>
-            </div> : <div></div>}
+            {scannedIngredients.length === 0 ? (
+              <div className="space-y-4">
+                {/* Image uploader */}
+                <ImageUploader
+                  onImageSelect={handleImageSelect}
+                  loading={scanning}
+                />
+
+                {selectedImage && !scanning && (
+                  <Button
+                    onClick={handleScan}
+                    variant="primary"
+                    className={"w-full h-12 text-lg"}
+                    disabled={scanning}
+                  >
+                    {scanning ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Camera className="w-5 h-5 mr-2" />
+                        Scan Image
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div></div>
+            )}
           </TabsContent>
           <TabsContent value="manual" className={"mt-6"}>
             <form onSubmit={handleAddManual} className="space-y-4">
