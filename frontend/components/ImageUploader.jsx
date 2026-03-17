@@ -38,6 +38,13 @@ function ImageUploader({ onImageSelect, loading }) {
     noKeyboard: true,
   });
 
+  const handleFileInputChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onDrop([file]);
+    }
+  };
+
   //   Preview Mode
   if (preview) {
     return <div></div>;
@@ -92,6 +99,16 @@ function ImageUploader({ onImageSelect, loading }) {
           )}
         </div>
       </div>
+
+      {/* Hidden file input with capture attribute for mobile */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleFileInputChange}
+        className="hidden"
+      />
     </>
   );
 }
