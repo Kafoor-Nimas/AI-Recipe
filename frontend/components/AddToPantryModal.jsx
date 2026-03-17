@@ -15,6 +15,7 @@ import useFetch from "@/hooks/use-fetch";
 import { addPantryItemManually, saveToPantry } from "@/actions/pantry.actions";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import ImageUploader from "./ImageUploader";
 
 const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
   const [activeTab, setActiveTab] = useState("scan");
@@ -104,7 +105,7 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
           <TabsContent value="scan" className={"space-y-6 mt-6"}>
             {scannedIngredients.length === 0 ? <div className="space-y-4">
               {/* Image uploader */}
-              <ImageUploader/>
+              <ImageUploader onImageSelect={handleImageSelect} loading={scanning}/>
             </div> : <div></div>}
           </TabsContent>
           <TabsContent value="manual" className={"mt-6"}>
