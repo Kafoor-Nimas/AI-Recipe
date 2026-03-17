@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, ImageIcon } from "lucide-react";
+import { Camera, ImageIcon, Upload } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
@@ -82,7 +82,7 @@ function ImageUploader({ onImageSelect, loading }) {
           </div>
 
           {!isDragActive && (
-            <div>
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
                 onClick={(e) => {
@@ -95,8 +95,28 @@ function ImageUploader({ onImageSelect, loading }) {
                 <Camera className="w-4 h-4" />
                 Take Photo
               </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  open();
+                }}
+                className={
+                  "border-orange-200 text-orange-700 hover:bg-orange-50 gap-2"
+                }
+              >
+                <Upload className="w-4 h-4" />
+                Browse Files
+              </Button>
             </div>
           )}
+
+          {/* Helper Text */}
+          <p className="text-xs text-stone-400">
+            Supports JPG, PNG, WenP •Max 10MB
+          </p>
         </div>
       </div>
 
