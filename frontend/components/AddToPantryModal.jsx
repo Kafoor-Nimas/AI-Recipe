@@ -61,6 +61,12 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
     onClose();
   };
 
+  // Handle Image selection
+  const handleImageSelect = (file) => {
+    setSelectedImage(file);
+    setScanIngredients([])
+  }
+
   const handleAddManual = async (e) => {
     e.preventDefault();
     if (!manualItem.name.trim() || !manualItem.quantity.trim()) {
@@ -96,7 +102,10 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="scan" className={"space-y-6 mt-6"}>
-            Make changes to your account here.
+            {scannedIngredients.length === 0 ? <div className="space-y-4">
+              {/* Image uploader */}
+              <ImageUploader/>
+            </div> : <div></div>}
           </TabsContent>
           <TabsContent value="manual" className={"mt-6"}>
             <form onSubmit={handleAddManual} className="space-y-4">
