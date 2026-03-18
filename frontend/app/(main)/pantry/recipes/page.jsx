@@ -3,6 +3,7 @@
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
 import useFetch from "@/hooks/use-fetch";
 import {
+  AlertCircle,
   ArrowLeft,
   ChefHat,
   Loader2,
@@ -100,6 +101,24 @@ const PantryRecipesPage = () => {
             </h2>
             <p className="text-stone-600 font-light">
               Our AI chef is analyzing your ingredients
+            </p>
+          </div>
+        )}
+
+        {/* Recipes Grid - Using RecipeCard Component */}
+
+        {/* Empty Pantry State */}
+        {!loading && recipes.length === 0 && recipesData?.success === false && (
+          <div className="bg-white p-12 text-center border-2 border-dashed border-stone-200">
+            <div className="bg-orange-50 w-20 h-20 border-2 border-orange-200 flex items-center justify-center mx-auto mb-6">
+              <AlertCircle className="w-10 h-10 text-orange-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-stone-900 mb-2">
+              Your Pantry is Empty
+            </h3>
+            <p className="text-stone-600 mb-8 max-w-md mx-auto font-light">
+              Add ingredients to your pantry first so we can suggest delicious
+              recipes you can make!
             </p>
           </div>
         )}
