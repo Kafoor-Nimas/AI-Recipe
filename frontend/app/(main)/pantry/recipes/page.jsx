@@ -2,7 +2,7 @@
 
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
 import useFetch from "@/hooks/use-fetch";
-import { ArrowLeft, ChefHat } from "lucide-react";
+import { ArrowLeft, ChefHat, Package } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 
@@ -45,7 +45,23 @@ const PantryRecipesPage = () => {
             </div>
           </div>
 
-          
+          {/* Ingredients Used for generating this reciped */}
+          {ingredientsUsed && (
+            <div className="bg-white p-4 border-stone-200 mb-4">
+              <div className="flex items-start gap-3">
+                <Package className="w-5 h-5 text-orange-600 mt-0.5 shrink-0" />
+                <div>
+                  <h3 className="font-bold text-stone-900 mb-1">
+                    Your Available Ingredients:
+                  </h3>
+                  <p className="text-stone-600 text-sm font-light">
+                    {ingredientsUsed}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* Usage state sending from backend */}
         </div>
       </div>
     </div>
