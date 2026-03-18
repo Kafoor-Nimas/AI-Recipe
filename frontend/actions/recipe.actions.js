@@ -68,5 +68,68 @@ export async function getRecipesByPantryIngredients() {
     }
 
     const ingredients = pantryData.data.map((item) => item.name).join(", ");
-  } catch (error) {}
+
+    // API call to generate recipes
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash-lite",
+    });
+
+    const prompt = `
+You are a professional chef. Given these available ingredients: ${ingredients}
+
+Suggest 5 recipes that can be made primarily with these ingredients. It's okay if the recipes need 1-2 common pantry staples (salt, pepper, oil, etc.) that aren't listed.
+
+Return ONLY a valid JSON array (no markdown, no explanations):
+[
+  {
+    "title": "Recipe name",
+    "description": "Brief 1-2 sentence description",
+    "matchPercentage": 85,
+    "missingIngredients": ["ingredient1", "ingredient2"],
+    "category": "breakfast|lunch|dinner|snack|dessert",
+    "cuisine": "italian|chinese|mexican|etc",
+    "prepTime": 20,
+    "cookTime": 30,
+    "servings": 4
+  }
+]
+
+Rules:
+- matchPercentage should be 70-100% (how many listed ingredients are used)
+- missingIngredients should be common items or optional additions
+- Sort by matchPercentage descending
+- Make recipes realistic and delicious
+`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    let recipeSuggestions;
+    try {
+      const cleanText = text
+        .replace(/```json\n?/g, "")
+        .replace(/```\n?/g, "")
+        .trim();
+
+      recipeSuggestions = JSON.parse(cleanText);
+    } catch (parseError) {
+      console.error("failed to parse Gemini response:", text);
+      throw new Error(
+        "failed to generate recipe suggestions. Please try again.",
+      );
+    }
+
+    return {
+      success: true,
+      recipes: recipeSuggestions,
+      ingredientsUsed: ingredients,
+      recommendationsLimit: isPro ? "unlimited" : 5,
+      message: `Found ${recipeSuggestions.length} recipes you can make!`,
+    };
+  } catch (error) {
+    console.error("Error in generating recipe suggestions:", error);
+    throw new Error(error.message || "Failed to get recipe suggestions");
+  }
 }
