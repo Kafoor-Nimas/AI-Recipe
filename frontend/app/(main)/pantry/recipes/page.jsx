@@ -1,6 +1,8 @@
 "use client";
 
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
+import PricingModal from "@/components/PricingModal";
+import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import {
   AlertCircle,
@@ -120,6 +122,29 @@ const PantryRecipesPage = () => {
               Add ingredients to your pantry first so we can suggest delicious
               recipes you can make!
             </p>
+          </div>
+        )}
+
+        {!loading && recipesData === undefined && (
+          <div className="bg-linear-to-br from-orange-50 to-amber-50 p-12 text-center border-2 border-orange-200">
+            <div className="bg-orange-100 w-20 h-20 border-2 border-orange-200 flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-10 h-10 text-orange-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-stone-900 mb-2">
+              Monthly Limit Reached
+            </h3>
+            <p className="text-stone-600 mb-8 max-w-md mx-auto font-light">
+              You&apos;ve used all your AI recipe recommendations this month.
+              Upgrade to Pro for unlimited suggestions!
+            </p>
+            <PricingModal>
+              <Button
+                className={"bg-orange-600 hover:bg-orange-700 text-white gap-2"}
+              >
+                <Sparkles className="w-4 h-4" />
+                Upgrade to Pro
+              </Button>
+            </PricingModal>
           </div>
         )}
       </div>
