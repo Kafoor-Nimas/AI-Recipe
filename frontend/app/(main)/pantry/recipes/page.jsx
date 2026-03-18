@@ -2,7 +2,14 @@
 
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
 import useFetch from "@/hooks/use-fetch";
-import { ArrowLeft, ChefHat, Package, Sparkle, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  ChefHat,
+  Loader2,
+  Package,
+  Sparkle,
+  Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 
@@ -84,8 +91,18 @@ const PantryRecipesPage = () => {
           )}
         </div>
 
-        {/*  */}
-
+        {/* Loading State */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-12 h-12 text-green-600 animate-spin mb-6" />
+            <h2 className="text-2xl font-bold text-stone-900 mb-2">
+              Finding Perfect Recipes
+            </h2>
+            <p className="text-stone-600 font-light">
+              Our AI chef is analyzing your ingredients
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
