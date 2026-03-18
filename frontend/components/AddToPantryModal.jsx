@@ -102,9 +102,27 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
     }
   }, [scanData]);
 
-  
+  const handleSaveScan = async () => {
+    if (scannedIngredients.length === 0) {
+      toast.error("No ingredients to save");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("ingredients", JSON.stringify(scannedIngredients));
+    await saveScannedItems(formData);
+  };
 
-  const removeIngredient = () => {};
+  useEffect(() => {
+    if (saveData?.success) {
+      toast.success(saveData.message);
+      handleClose();
+      if (onSuccess) onSuccess();
+    }
+  }, [saveData]);
+
+  const removeIngredient = (index) => {
+    setScanIngredients(scannedIngredients.filter((_, i) => i !== index));
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
