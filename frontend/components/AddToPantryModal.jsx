@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Camera, Loader2, Plus, X } from "lucide-react";
+import { Camera, Check, Loader2, Plus, X } from "lucide-react";
 import useFetch from "@/hooks/use-fetch";
 import {
   addPantryItemManually,
@@ -101,6 +101,10 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
       toast.success(`Found ${scanData.ingredients.length} ingredients!`);
     }
   }, [scanData]);
+
+  
+
+  const removeIngredient = () => {};
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -214,6 +218,27 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
                     </div>
                   ))}
                 </div>
+
+                {/* Save Button */}
+                <Button
+                  onClick={handleSaveScan}
+                  disabled={saving || scannedIngredients.length === 0}
+                  className={
+                    "flex-1 bg-green-600 hover:bg-green-700 text-white h-12 w-full"
+                  }
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-5 h-5 mr-2" />
+                      Save {scannedIngredients.length} Items to Pantry
+                    </>
+                  )}
+                </Button>
               </div>
             )}
           </TabsContent>
