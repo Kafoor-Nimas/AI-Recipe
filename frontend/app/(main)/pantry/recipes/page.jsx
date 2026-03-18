@@ -2,7 +2,7 @@
 
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
 import useFetch from "@/hooks/use-fetch";
-import { ArrowLeft, ChefHat, Package } from "lucide-react";
+import { ArrowLeft, ChefHat, Package, Sparkle, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 
@@ -62,7 +62,30 @@ const PantryRecipesPage = () => {
             </div>
           )}
           {/* Usage state sending from backend */}
+          {recipesData !== undefined && (
+            <div className="bg-orange-50 p-4 border-2 border-orange-200 inline-flex items-center gap-3">
+              <Sparkles className="w-5 h-5 text-orange-600" />
+              <div className="text-sm">
+                {recipesData.recommendationsLimit === "unlimited" ? (
+                  <>
+                    <span className="fond-bold text-green-600">∞</span>
+                    <span className="text-orange-700 font-light">
+                      {" "}
+                      Unlimited AI recommendations (Pro Plan)
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-orange-700 font-light">
+                    Upgrade to Pro for unlimited AI recommendations
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
+
+        {/*  */}
+
       </div>
     </div>
   );
