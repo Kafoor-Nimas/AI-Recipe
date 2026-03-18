@@ -10,12 +10,17 @@ import {
 } from "@/components/ui/dialog";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Camera, Loader2, Plus } from "lucide-react";
+import { Camera, Loader2, Plus, X } from "lucide-react";
 import useFetch from "@/hooks/use-fetch";
-import { addPantryItemManually, saveToPantry } from "@/actions/pantry.actions";
+import {
+  addPantryItemManually,
+  saveToPantry,
+  scanPantryImage,
+} from "@/actions/pantry.actions";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import { Badge } from "./ui/badge";
 
 const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
   const [activeTab, setActiveTab] = useState("scan");
@@ -28,7 +33,7 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
     loading: scanning,
     data: scanData,
     fn: scanImage,
-  } = useFetch(saveToPantry);
+  } = useFetch(scanPantryImage);
 
   // Save scanned items
   const {
@@ -96,6 +101,7 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
       toast.success(`Found ${scanData.ingredients.length} ingredients!`);
     }
   }, [scanData]);
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
@@ -149,7 +155,66 @@ const AddToPantryModal = ({ isOpen, onClose, onSuccess }) => {
                 )}
               </div>
             ) : (
-              <div></div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-stone-900">
+                      Review Detected Items
+                    </h3>
+                    <p className="text-sm text-stone-600">
+                      Found {scannedIngredients.length} ingredients
+                    </p>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setScanIngredients([]);
+                      setSelectedImage(null);
+                    }}
+                    className={"gap-2"}
+                  >
+                    <Camera className="w-4 h-4" />
+                    Scan Again
+                  </Button>
+                </div>
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {scannedIngredients.map((ingredient, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 p-4 bg-stone-50 rounded-xl border border-stone-200"
+                    >
+                      <div className="flex-1">
+                        <div className="font-medium text-stone-900">
+                          {ingredient.name}
+                        </div>
+                        <div className="text-sm text-stone-500">
+                          {ingredient.quantity}
+                        </div>
+                      </div>
+
+                      {ingredient.confidence && (
+                        <Badge
+                          variant="outline"
+                          className={"text-xs text-green-700 border-green-200"}
+                        >
+                          {Math.round(ingredient.confidence * 100)}%
+                        </Badge>
+                      )}
+
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => removeIngredient(index)}
+                        className={"text-stone-600 hover:text-red-600"}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </TabsContent>
           <TabsContent value="manual" className={"mt-6"}>
