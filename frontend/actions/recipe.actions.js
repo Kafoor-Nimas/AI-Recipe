@@ -2,6 +2,7 @@
 
 import { freeMealRecommendations, proTierLimit } from "@/lib/arcjet";
 import { checkUser } from "@/lib/checkUser";
+import { DUMMY_RECIPE_RESPONSE } from "@/lib/dummy";
 import { request } from "@arcjet/next";
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -140,7 +141,7 @@ function normalizeTitle(title) {
   return title
     .trim()
     .split(" ")
-    .map((word) => word.chatAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 }
 

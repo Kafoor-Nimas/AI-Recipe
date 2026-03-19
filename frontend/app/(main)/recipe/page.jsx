@@ -8,11 +8,16 @@ import {
 import useFetch from "@/hooks/use-fetch";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 function RecipeContent() {
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("cook");
+
+  const [recipe, setRecipe] = useState(null);
+  const [recipeId, setRecipeId] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   // Get or generate recipe
   const {
@@ -34,6 +39,30 @@ function RecipeContent() {
     data: removeData,
     fn: removeFromCollection,
   } = useFetch(removeRecipeFromCollection);
+
+  // Fetch recipe on mount
+  useEffect(() => {
+    if (recipeName && !recipe) {
+      const formData = new FormData();
+      formData.append("recipeName", recipeName);
+      fetchRecipe(formData);
+    }
+  }, [recipeName]);
+
+  // Update recipe when data arrives
+  useEffect(() => {
+    if (recipeData?.success) {
+      setRecipe(recipeData.recipe);
+      setRecipeId(recipeData.recipeId);
+      setIsSaved(recipeData.isSaved);
+    }
+
+    if (recipeData.fromDatabase) {
+      toast.success("Recipe loaded from database");
+    } else {
+      toast.success("New recipe generated and saved!");
+    }
+  }, [recipeData]);
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
