@@ -11,6 +11,7 @@ import {
 
 import Image from "next/image";
 import { Badge } from "./ui/badge";
+import { Clock, Users } from "lucide-react";
 
 const RecipeCard = ({ recipe, variant = "default" }) => {
   const getRecipeData = () => {
@@ -133,11 +134,39 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
               </div>
             )}
           </div>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardTitle className={"text-2xl font-serif font-bold text-stone-900"}>
+            {data.title}
+          </CardTitle>
+          {data.description && (
+            <CardDescription className={"text-stone-600 leading-relaxed mt-2"}>
+              {data.description}
+            </CardDescription>
+          )}
         </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
+        <CardContent className={"space-y-4 flex-1"}>
+          {(data.prepTime || data.cookTime || data.servings) && (
+            <div className="flex gap-4 text-sm text-stone-500">
+              {(data.prepTime || data.cookTime) && (
+                <div className="flex items-center gap-1">
+                  <Clock className="w-4 h-4" />
+                  <span>
+                    {parseInt(data.prepTime || 0) +
+                      parseInt(data.cookTime || 0)}{" "}
+                    mins
+                  </span>
+                </div>
+              )}
+
+              {data.servings && (
+                <div className="flex items-center gap-1">
+                  <Users className="w-4 h-4" />
+                  <span>{data.servings} servings</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/*  */}
         </CardContent>
         <CardFooter>
           <p>Card Footer</p>
