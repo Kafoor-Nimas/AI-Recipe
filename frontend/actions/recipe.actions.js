@@ -134,3 +134,10 @@ Rules:
     throw new Error(error.message || "Failed to get recipe suggestions");
   }
 }
+
+// Helper function to fetch iamge from Unsplash
+async function fetchRecipeImage() {
+  
+}
+
+
