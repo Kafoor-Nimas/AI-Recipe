@@ -11,7 +11,8 @@ import {
 
 import Image from "next/image";
 import { Badge } from "./ui/badge";
-import { Clock, Users } from "lucide-react";
+import { ChefHat, Clock, Users } from "lucide-react";
+import { Button } from "./ui/button";
 
 const RecipeCard = ({ recipe, variant = "default" }) => {
   const getRecipeData = () => {
@@ -187,7 +188,16 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
           )}
         </CardContent>
         <CardFooter>
-          <p>Card Footer</p>
+          <Link href={data.href} className="w-full">
+            <Button
+              className={
+                "w-full bg-green-600 hover:bg-green-700 text-white gap-2"
+              }
+            >
+              <ChefHat className="w-4 h-4" />
+              View Full Recipe
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     );
