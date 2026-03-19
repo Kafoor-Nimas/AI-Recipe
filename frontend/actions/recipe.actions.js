@@ -135,9 +135,85 @@ Rules:
   }
 }
 
-// Helper function to fetch iamge from Unsplash
-async function fetchRecipeImage() {
-  
+// Helper function to normalize recipe title
+function normalizeTitle(title) {
+  return title
+    .trim()
+    .split(" ")
+    .map((word) => word.chatAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 }
 
+// Helper function to fetch iamge from Unsplash
+async function fetchRecipeImage() {}
 
+// Get or generate recipe details
+export async function getOrGenerateRecipe(formData) {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const recipeName = formData.get("recipeName");
+    if (!recipeName) {
+      throw new Error("Recipe name is required");
+    }
+
+    // Normalize the title (e.g., "apple cake" -> "Apple Cake")
+    const normalizedTitle = normalizeTitle(recipeName);
+
+    // Step 1: Check if recipe already exists in DB (case-insensitive search)
+
+    // Step 2: Recipe doesn't exist, generate with Gemini
+
+    // Step 3: Fetch image from Unsplash
+
+    // Step 4: Save generated recipe to database
+
+    return DUMMY_RECIPE_RESPONSE;
+  } catch (error) {
+    console.error("Error in getOrGenerateRecipe:", error);
+    throw new Error(error.message || "Failed to load recipe");
+  }
+}
+
+// Save recipe to user's collection (bookmark)
+export async function saveRecipeToCollection(formData) {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const recipeId = formData.get("recipeId");
+    if (!recipeId) {
+      throw new Error("Recipe ID is required");
+    }
+
+    // Check if already saved
+    const existingResponse = await fetch(
+      `${STRAPI_URL}/api/saved-recipes?filters[user][id][$eq]=${user.id}&filters[recipe][id][$eq]=${recipeId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        cache: "no-store",
+      },
+    );
+
+    if (existingResponse.ok) {
+      const existingData = await existingResponse.json();
+      if (existingData.data && existingData.data.length > 0) {
+        return {
+          success: true,
+          alreadySaved: true,
+          message: "Recipe is already in your colloction",
+        };
+      }
+    }
+  } catch (error) {}
+}
+
+// Remove recipe from user's collection(unbookmark)
+export async function removeRecipeFromCollection(formData) {}
