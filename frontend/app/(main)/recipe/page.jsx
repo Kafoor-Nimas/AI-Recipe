@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  getOrGenerateRecipe,
+  removeRecipeFromCollection,
+  saveRecipeToCollection,
+} from "@/actions/recipe.actions";
+import useFetch from "@/hooks/use-fetch";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
@@ -7,6 +13,27 @@ import React, { Suspense } from "react";
 function RecipeContent() {
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("cook");
+
+  // Get or generate recipe
+  const {
+    loading: loadingRecipe,
+    data: recipeData,
+    fn: fetchRecipe,
+  } = useFetch(getOrGenerateRecipe);
+
+  // Save to collection
+  const {
+    loading: saving,
+    data: saveData,
+    fn: saveToCollection,
+  } = useFetch(saveRecipeToCollection);
+
+  // Remove from collection
+  const {
+    loading: removing,
+    data: removeData,
+    fn: removeFromCollection,
+  } = useFetch(removeRecipeFromCollection);
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
