@@ -212,7 +212,41 @@ export async function saveRecipeToCollection(formData) {
         };
       }
     }
-  } catch (error) {}
+
+    // Create saved recipe relation
+    const saveResponse = await fetch(`${STRAPI_URL}/api/saved-recipes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+      body: JSON.stringify({
+        data: {
+          user: user.id,
+          recipe: recipeId,
+          savedAt: new Date().toISOString(),
+        },
+      }),
+    });
+
+    if (!saveResponse.ok) {
+      const errorText = await saveResponse.text();
+      console.error("failed to save recipe:", errorText);
+      throw new Error("Failed to save recipe to collection");
+    }
+
+    const savedRecipe = await saveResponse.json();
+
+    return {
+      success: true,
+      alreadySaved: false,
+      savedRecipe: savedRecipe.data,
+      message: "Recipe saved to your collection",
+    };
+  } catch (error) {
+    console.error("Error saving recipe to collection:", error);
+    throw new Error(error.message || "Failed to save recipe");
+  }
 }
 
 // Remove recipe from user's collection(unbookmark)
