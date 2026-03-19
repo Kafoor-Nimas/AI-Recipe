@@ -1,7 +1,16 @@
 import Link from "next/link";
 import React from "react";
-import { Card, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "./ui/card";
+
 import Image from "next/image";
+import { Badge } from "./ui/badge";
 
 const RecipeCard = ({ recipe, variant = "default" }) => {
   const getRecipeData = () => {
@@ -40,6 +49,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
 
   const data = getRecipeData();
 
+  // Add grid variant
   if (variant === "grid") {
     return (
       <Link href={data.href}>
@@ -81,6 +91,49 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
           </CardHeader>
         </Card>
       </Link>
+    );
+  }
+
+  // Add pantry variant
+  if (variant === "pantry") {
+    return (
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <div className="flex flex-wrap gap-2 mb-3">
+                {data.cuisine && (
+                  <Badge
+                    variant="outline"
+                    className={"text-orange-600 border-orange-200 capitalize"}
+                  >
+                    {data.cuisine}
+                  </Badge>
+                )}
+                {data.category && (
+                  <Badge
+                    variant="outline"
+                    className={"text-stone-600 border-stone-200 capitalize"}
+                  >
+                    {data.category}
+                  </Badge>
+                )}
+              </div>
+            </div>
+            
+
+
+          </div>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter>
+      </Card>
     );
   }
 
