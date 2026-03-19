@@ -166,7 +166,25 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
             </div>
           )}
 
-          {/*  */}
+          {/* Show missing ingredients */}
+          {data.missingIngredients && data.missingIngredients.length > 0 && (
+            <div className="p-4 bg-orange-50 border border-orange-100">
+              <h4 className="text-sm font-semibold text-orange-900 mb-2">
+                You&apos;ll need:
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {data.missingIngredients.map((ingredient, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className={"text-orange-700 border-orange-200 bg-white"}
+                  >
+                    {ingredient}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
         <CardFooter>
           <p>Card Footer</p>
