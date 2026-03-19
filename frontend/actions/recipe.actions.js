@@ -250,4 +250,63 @@ export async function saveRecipeToCollection(formData) {
 }
 
 // Remove recipe from user's collection(unbookmark)
-export async function removeRecipeFromCollection(formData) {}
+export async function removeRecipeFromCollection(formData) {
+  try {
+    const user = await checkUser();
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const recipeId = formData.get("recipeId");
+    if (!recipeId) {
+      throw new Error("Recipe ID is required");
+    }
+
+    // Find saved recipe relation
+    const searchResponse = await fetch(
+      `${STRAPI_URL}/api/saved-recipes?filters[user][id][$eq]=${user.id}&filters[recipe][id][$eq]=${recipeId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        cache: "no-store",
+      },
+    );
+
+    if (!searchResponse.ok) {
+      throw new Error("Failed to find saved recipe");
+    }
+    const searchData = await searchResponse.json();
+
+    if (!searchData.data || searchData.data.length === 0) {
+      return {
+        success: true,
+        message: "Recipe was not in your collection",
+      };
+    }
+
+    // Delete saved recipe relation
+    const savedRecipeId = searchData.data[0].id;
+    const deleteResponse = await fetch(
+      `${STRAPI_URL}/api/saved-recipes/${savedRecipeId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+      },
+    );
+
+    if (!deleteResponse.ok) {
+      throw new Error("Failed to remove recipe from collection");
+    }
+
+    return {
+      success: true,
+      message: "Recipe removed from your collection",
+    };
+  } catch (error) {
+    console.error("Error removing recipe from collection:", error);
+    throw new Error(error.message || "Failed to remove recipe");
+  }
+}
