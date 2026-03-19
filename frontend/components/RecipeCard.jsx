@@ -16,6 +16,24 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
       };
     }
 
+    // For-AI-generated pantry recipes
+    if (recipe.matchPercentage) {
+      return {
+        title: recipe.title,
+        description: recipe.description,
+        category: recipe.category,
+        cuisine: recipe.cuisine,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        servings: recipe.servings,
+        matchPercentage: recipe.matchPercentage,
+        missingIngredients: recipe.missingIngredients || [],
+        image: recipe.imageUrl, //Add image support
+        href: `/recipe?cook=${encodeURIComponent(recipe.title)}`,
+        showImage: !!recipe.imageUrl, //Show if image exists
+      };
+    }
+
     // more conditions
     return {};
   };

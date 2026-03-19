@@ -2,6 +2,7 @@
 
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
 import PricingModal from "@/components/PricingModal";
+import RecipeCard from "@/components/RecipeCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
@@ -15,7 +16,7 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import { Loadable } from "next/dist/server/route-modules/pages/vendored/contexts/entrypoints";
+
 import Link from "next/link";
 import React, { useEffect } from "react";
 
@@ -130,7 +131,12 @@ const PantryRecipesPage = () => {
               </Badge>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">{/* Rendering */}</div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Rendering */}
+              {recipes.map((recipe, index) => (
+                <RecipeCard key={index} recipe={recipe} variant="pantry" />
+              ))}
+            </div>
 
             <div className="mt-8 text-center">
               <Button
