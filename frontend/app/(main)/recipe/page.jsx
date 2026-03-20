@@ -5,8 +5,10 @@ import {
   removeRecipeFromCollection,
   saveRecipeToCollection,
 } from "@/actions/recipe.actions";
+import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -55,14 +57,38 @@ function RecipeContent() {
       setRecipe(recipeData.recipe);
       setRecipeId(recipeData.recipeId);
       setIsSaved(recipeData.isSaved);
-    }
 
-    if (recipeData.fromDatabase) {
-      toast.success("Recipe loaded from database");
-    } else {
-      toast.success("New recipe generated and saved!");
+      if (recipeData.fromDatabase) {
+        toast.success("Recipe loaded from database");
+      } else {
+        toast.success("New recipe generated and saved!");
+      }
     }
   }, [recipeData]);
+
+  // No recipe name in URL
+  if (!recipeName) {
+    return (
+      <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
+        <div className="container mx-auto max-w-4xl text-center py-20">
+          <div className="bg-orange-50 w-20 h-20 border-2 border-orange-200 flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-10 h-10 text-orange-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-stone-900 mb-2">
+            No recipe specified
+          </h2>
+          <p className="text-stone-600 mb-6 font-light">
+            Please select a recipe from the dashboard
+          </p>
+          <Link href={"/dashboard"}>
+            <Button className={"bg-orange-600 hover:bg-orange-700"}>
+              Go to dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
