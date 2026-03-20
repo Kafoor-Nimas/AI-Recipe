@@ -11,6 +11,7 @@ import { AlertCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
+import { ClockLoader } from "react-spinners";
 import { toast } from "sonner";
 
 function RecipeContent() {
@@ -85,6 +86,34 @@ function RecipeContent() {
               Go to dashboard
             </Button>
           </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (loadingRecipe === null || loadingRecipe) {
+    return (
+      <div className="min-h-screen bg-stone-50 pt-24 pb-16 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center py-20">
+            <ClockLoader className="mx-auto mb-6" color="#dc6300" />
+            <h2 className="text-3xl font-bold text-stone-900 mb-2 tracking-tight">
+              Preparing Your Recipe
+            </h2>
+            <p className="text-stone-600 font-light">
+              Our AI chef is crafting detailed instructions for{" "}
+              <span className="font-bold text-orange-600">{recipeName}</span>
+              ...
+            </p>
+            <div className="mt-8 max-w-md mx-auto">
+              <div className="flex items-center gap-3 text-sm text-stone-500">
+                <div className="flex-1 h-1 bg-stone-200 overflow-hidden relative">
+                  <div className="absolute left-0 top-0 h-full bg-orange-600 animate-slow-fill" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
