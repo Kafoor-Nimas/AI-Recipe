@@ -11,6 +11,8 @@ import useFetch from "@/hooks/use-fetch";
 import {
   AlertCircle,
   ArrowLeft,
+  Bookmark,
+  BookmarkCheck,
   Clock,
   Flame,
   Loader2,
@@ -52,6 +54,39 @@ function RecipeContent() {
     data: removeData,
     fn: removeFromCollection,
   } = useFetch(removeRecipeFromCollection);
+
+  // Handle save success
+  useEffect(() => {
+    if (saveData?.success) {
+      if (saveData.alreadySaved) {
+        toast.info("Recipe is already in your collection");
+      } else {
+        setIsSaved(true);
+        toast.success("Recipe saved to your collection");
+      }
+    }
+  }, [saveData]);
+
+  // Handle remove success
+  useEffect(() => {
+    if (removeData?.success) {
+      setIsSaved(false);
+      toast.success("Recipe removed from collection");
+    }
+  }, [removeData]);
+
+  const handleToggleSave = async () => {
+    if (!recipeId) return;
+
+    const formData = new FormData();
+    formData.append("recipeId", recipeId);
+
+    if (isSaved) {
+      await removeFromCollection(formData);
+    } else {
+      await saveToCollection(formData);
+    }
+  };
 
   // Fetch recipe on mount
   useEffect(() => {
@@ -253,7 +288,30 @@ function RecipeContent() {
               )}
             </div>
 
-            
+            <div className="flex flex-wrap gap-3">
+              <Button
+                onClick={handleToggleSave}
+                disabled={saving || removing}
+                className={`${isSaved ? "bg-green-600 hover:bg-green-700 border-2 border-green-700" : "bg-orange-600 hover:bg-orange-700 border-2 border-orange-700"} text-white gap-2 transition-all`}
+              >
+                {saving || removing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {saving ? "Saving..." : "Removing..."}
+                  </>
+                ) : isSaved ? (
+                  <>
+                    <BookmarkCheck className="w-4 h-4" />
+                    Saved to Collection
+                  </>
+                ) : (
+                  <>
+                    <Bookmark className="w-4 h-4" />
+                    Save to Collection
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
