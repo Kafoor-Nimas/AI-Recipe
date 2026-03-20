@@ -7,9 +7,9 @@ import {
 } from "@/actions/recipe.actions";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { ClockLoader } from "react-spinners";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ import { toast } from "sonner";
 function RecipeContent() {
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("cook");
+  const router = useRouter();
 
   const [recipe, setRecipe] = useState(null);
   const [recipeId, setRecipeId] = useState(null);
@@ -113,6 +114,44 @@ function RecipeContent() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (loadingRecipe === false && !recipe) {
+    return (
+      <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
+        <div className="container mx-auto max-w-4xl text-center py-20 ">
+          <div className="bg-red-50 w-20 h-20 border-2 border-red-200 flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-10 h-10 text-red-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-stone-900 mb-2">
+            Failed to load recipe
+          </h2>
+          <p className="text-stone-600 mb-6 font-light">
+            Something went wrong while loading the recipe.Please try again.
+          </p>
+
+          <div className="flex gap-3 justify-center">
+            <Button
+              onClick={() => router.back()}
+              variant="outline"
+              className={
+                "border-2 border-stone-900 hover:bg-stone-900 hover:text-white"
+              }
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Go Back
+            </Button>
+            <Button
+              onClick={() => window.location.reload()}
+              className={"bg-orange-600 hover:bg-orange-700"}
+            >
+              Retry
+            </Button>
           </div>
         </div>
       </div>
