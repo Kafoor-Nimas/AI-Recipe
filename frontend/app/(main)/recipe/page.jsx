@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
@@ -158,9 +159,39 @@ function RecipeContent() {
     );
   }
 
+
+  // Main recipe view
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
-      <div className="container mx-auto max-w-4xl ">{recipeName}</div>
+      <div className="container mx-auto max-w-4xl ">
+        {/* Header */}
+        <div className="mb-8">
+          <Link
+            href={"/dashboard"}
+            className="inline-flex items-center gap-2 text-stone-600 hover:text-orange-600 transition-colors mb-6 font-medium"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Dashboard
+          </Link>
+
+           {/* Title Section */}
+          <div className="bg-white p-8 md:p-10 border-2 border-stone-200 mb-6">
+            {/* Badges */}
+            {recipe.imageUrl && (
+              <div className="relative w-full h-72 overflow-hidden mb-7">
+                <Image
+                  src={recipe.imageUrl}
+                  alt={recipe.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  priority
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
