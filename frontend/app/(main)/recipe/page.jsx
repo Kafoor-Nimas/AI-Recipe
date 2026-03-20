@@ -8,7 +8,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Clock,
+  Flame,
+  Loader2,
+  Users,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -218,6 +225,35 @@ function RecipeContent() {
             <p className="text-lg text-stone-600 mb-6 font-light">
               {recipe.description}
             </p>
+
+            {/* Stat */}
+            <div className="flex flex-wrap gap-6 text-stone-600 mb-6">
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-orange-600" />
+                <span className="font-medium">
+                  {parseInt(recipe.prepTime) + parseInt(recipe.cookTime)} mins
+                  total
+                </span>
+              </div>
+
+              {/* Servings */}
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-orange-600" />
+                <span className="font-medium">{recipe.servings} servings</span>
+              </div>
+
+              {/* Nutrition information */}
+              {recipe.nutrition?.calories && (
+                <div className="flex items-center gap-2">
+                  <Flame className="w-5 h-5 text-orange-600" />
+                  <span className="font-medium">
+                    {recipe.nutrition.calories} cal/serving
+                  </span>
+                </div>
+              )}
+            </div>
+
+            
           </div>
         </div>
       </div>
