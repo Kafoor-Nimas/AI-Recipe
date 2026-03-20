@@ -5,6 +5,7 @@ import {
   removeRecipeFromCollection,
   saveRecipeToCollection,
 } from "@/actions/recipe.actions";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
@@ -159,7 +160,6 @@ function RecipeContent() {
     );
   }
 
-
   // Main recipe view
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-16 ">
@@ -174,7 +174,7 @@ function RecipeContent() {
             Back to Dashboard
           </Link>
 
-           {/* Title Section */}
+          {/* Title Section */}
           <div className="bg-white p-8 md:p-10 border-2 border-stone-200 mb-6">
             {/* Badges */}
             {recipe.imageUrl && (
@@ -189,6 +189,35 @@ function RecipeContent() {
                 />
               </div>
             )}
+            {/* Recipe cuisine and category */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              <Badge
+                className={
+                  "text-orange-600 border-2 border-orange-200 capitalize"
+                }
+                variant="outline"
+              >
+                {recipe.cuisine}
+              </Badge>
+              <Badge
+                variant="outline"
+                className={
+                  "text-stone-600 border-2 border-stone-200 capitalize"
+                }
+              >
+                {recipe.category}
+              </Badge>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 tracking-tight">
+              {recipe.title}
+            </h1>
+
+            {/* Description */}
+            <p className="text-lg text-stone-600 mb-6 font-light">
+              {recipe.description}
+            </p>
           </div>
         </div>
       </div>
