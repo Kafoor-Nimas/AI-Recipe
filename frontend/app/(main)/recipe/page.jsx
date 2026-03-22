@@ -311,9 +311,22 @@ function RecipeContent() {
                   </>
                 )}
               </Button>
+
+              {/* PDF Download Button */}
+
             </div>
           </div>
         </div>
+        {/* Header finished */}
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Left Column - Ingredients & Nutrition */}
+
+          
+          {/* Right Column - Instructions & Tips */}
+
+        </div>
+
       </div>
     </div>
   );
