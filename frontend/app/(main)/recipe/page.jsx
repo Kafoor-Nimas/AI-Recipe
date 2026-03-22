@@ -13,6 +13,7 @@ import {
   ArrowLeft,
   Bookmark,
   BookmarkCheck,
+  ChefHat,
   Clock,
   Flame,
   Loader2,
@@ -313,7 +314,6 @@ function RecipeContent() {
               </Button>
 
               {/* PDF Download Button */}
-
             </div>
           </div>
         </div>
@@ -321,12 +321,47 @@ function RecipeContent() {
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Left Column - Ingredients & Nutrition */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="bg-white p-6 border-2 border-stone-200 lg:sticky lg:top-24">
+              <h2 className="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+                <ChefHat className="w-6 h-6 text-orange-600" />
+                Ingredients
+              </h2>
 
-          
+              {Object.entries(
+                recipe.ingredients.reduce((acc, ing) => {
+                  const cat = ing.category || "Other";
+                  if (!acc[cat]) acc[cat] = [];
+                  acc[cat].push(ing);
+                  return acc;
+                }, {}),
+              ).map(([category, items]) => (
+                <div key={category} className="mb-6 last:mb-0">
+                  <h3 className="text-sm font-bold text-stone-500 uppercase tracking-wide mb-3">
+                    {category}
+                  </h3>
+
+                  <ul className="space-y-2">
+                    {items.map((ingredient, i) => (
+                      <li
+                        key={i}
+                        className="flex justify-between items-start gap-2 text-stone-700 py-2 border-b border-stone-100 last-border-0"
+                      >
+                        <span className="flex-1">{ingredient.item}</span>
+                        <span className="font-bold text-orange-600 text-sm whitespace-nowrap">
+                          {ingredient.amount}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Right Column - Instructions & Tips */}
-
+          <div className="lg:col-span-2 space-y-6"></div>
         </div>
-
       </div>
     </div>
   );
