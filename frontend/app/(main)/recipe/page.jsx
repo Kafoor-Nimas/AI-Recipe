@@ -13,9 +13,11 @@ import {
   ArrowLeft,
   Bookmark,
   BookmarkCheck,
+  CheckCircle2,
   ChefHat,
   Clock,
   Flame,
+  Lightbulb,
   Loader2,
   Users,
 } from "lucide-react";
@@ -420,7 +422,7 @@ function RecipeContent() {
                     <div className="absolute -left-5 top-0 w-10 h-10 bg-orange-600 text-white flex items-center justify-center font-bold border-2 border-orange-700">
                       {step.step}
                     </div>
-                  {/* Title  and Instructions */}
+                    {/* Title  and Instructions */}
                     <div>
                       <h3 className="font-bold text-lg text-stone-900 mb-2">
                         {step.title}
@@ -428,10 +430,40 @@ function RecipeContent() {
                       <p className="text-stone-700 font-light mb-3">
                         {step.instruction}
                       </p>
+                      {/* Tip */}
+                      {step.tip && (
+                        <div className="bg-orange-50 border-l-4 border-orange-600 p-4">
+                          <p className="text-sm text-orange-900 flex items-start gap-2">
+                            <Lightbulb className="w-4 h-4 mt-0.5 shrink-0 fill-orange-600" />
+                            <span>
+                              <strong className="font-bold">Pro Tip:</strong>{" "}
+                              {step.tip}
+                            </span>
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
+
+                {/* Completion Message */}
+              <div className="mt-8 p-6 bg-linear-to-br from-green-50 to-emerald-50 border-2 border-green-200">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-bold text-green-900 mb-1">
+                      You&apos;re all done!
+                    </h3>
+                    <p className="text-sm text-green-800 font-light">
+                      Plate your masterpiece and enjoy your delicious{" "}
+                      {recipe.title}!
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
           </div>
         </div>
