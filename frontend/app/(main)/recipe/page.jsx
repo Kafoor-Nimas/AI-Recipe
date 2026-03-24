@@ -16,17 +16,21 @@ import {
   CheckCircle2,
   ChefHat,
   Clock,
+  Download,
   Flame,
   Lightbulb,
   Loader2,
   Users,
 } from "lucide-react";
 import Image from "next/image";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { ClockLoader } from "react-spinners";
 import { toast } from "sonner";
+import { RecipePDF } from "@/components/RecipePDF";
 
 function RecipeContent() {
   const searchParams = useSearchParams();
@@ -316,6 +320,23 @@ function RecipeContent() {
               </Button>
 
               {/* PDF Download Button */}
+              <PDFDownloadLink
+                document={<RecipePDF recipe={recipe} />}
+                fileName={`${recipe.title
+                  .replace(/\s+/g, "-")
+                  .toLowerCase()}.pdf`}
+              >
+                {({ loading }) => (
+                  <Button
+                    variant="outline"
+                    className="border-2 border-orange-600 text-orange-700 hover:bg-orange-50 gap-2"
+                    disabled={loading}
+                  >
+                    <Download className="w-4 h-4" />
+                    {loading ? "Preparing PDF..." : "Download PDF"}
+                  </Button>
+                )}
+              </PDFDownloadLink>
             </div>
           </div>
         </div>
@@ -447,7 +468,7 @@ function RecipeContent() {
                 ))}
               </div>
 
-                {/* Completion Message */}
+              {/* Completion Message */}
               <div className="mt-8 p-6 bg-linear-to-br from-green-50 to-emerald-50 border-2 border-green-200">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0 mt-0.5" />
@@ -462,9 +483,92 @@ function RecipeContent() {
                   </div>
                 </div>
               </div>
-
-
             </div>
+
+            {/* General Tips */}
+            {recipe.tips && recipe.tips.length > 0 && (
+              <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-8 border-2 border-orange-200">
+                <h2 className="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+                  <Lightbulb className="w-6 h-6 text-orange-600 fill-orange-600" />
+                  Chef&apos;s Tips & Tricks
+                  {!recipeData.isPro && (
+                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                      PRO
+                    </span>
+                  )}
+                </h2>
+
+                {/* <ProLockedSection
+                  isPro={recipeData.isPro}
+                  lockText="Chef tips are Pro-only"
+                  ctaText="Unlock Pro Tips →"
+                >
+                  <ul className="space-y-3">
+                    {recipe.tips.map((tip, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-3 text-stone-700"
+                      >
+                        <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                        <span className="font-light">{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </ProLockedSection> */}
+              </div>
+            )}
+
+            {/* Substitutions */}
+            {recipe.substitutions && recipe.substitutions.length > 0 && (
+              <div className="bg-white p-8 border-2 border-stone-200">
+                <h2 className="text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+                  Ingredient Substitutions
+                  {!recipeData.isPro && (
+                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                      PRO
+                    </span>
+                  )}
+                </h2>
+
+                <p className="text-stone-600 mb-6 text-sm font-light">
+                  Don&apos;t have everything? Here are some alternatives you can
+                  use:
+                </p>
+
+                {/* <ProLockedSection
+                  isPro={recipeData.isPro}
+                  lockText="Substitutions are Pro-only"
+                >
+                  <div className="space-y-4">
+                    {recipe.substitutions.map((sub, i) => (
+                      <div
+                        key={i}
+                        className="border-b-2 border-stone-100 pb-4 last:border-0 last:pb-0"
+                      >
+                        <h3 className="font-bold text-stone-900 mb-2">
+                          Instead of{" "}
+                          <span className="text-orange-600">
+                            {sub.original}
+                          </span>
+                          :
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {sub.alternatives.map((alt, j) => (
+                            <Badge
+                              key={j}
+                              variant="outline"
+                              className="text-stone-600 border-2 border-stone-200"
+                            >
+                              {alt}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ProLockedSection> */}
+              </div>
+            )}
           </div>
         </div>
       </div>
