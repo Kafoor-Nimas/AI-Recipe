@@ -356,6 +356,51 @@ function RecipeContent() {
                   </ul>
                 </div>
               ))}
+
+              {/* Nutrition Info */}
+              {recipe.nutrition && (
+                <div className="mt-6 pt-6 border-t-2 border-stone-200">
+                  <h3 className="font-bold text-stone-900 mb-3 uppercase tracking-wide text-sm">
+                    Nutrition (per serving)
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-orange-50 p-3 text-center border-2 border-orange-100">
+                      <div className="text-2xl font-bold text-orange-600">
+                        {recipe.nutrition.calories}
+                      </div>
+                      <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                        Calories
+                      </div>
+                    </div>
+                    <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
+                       <div className="text-2xl font-bold text-stone-900">
+                        {recipe.nutrition.protein}
+                      </div>
+                      <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                        Protein
+                      </div>
+                    </div>
+                    <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
+                      <div className="text-2xl font-bold text-stone-900">
+                        {recipe.nutrition.carbs}
+                      </div>
+                      <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                        Carbs
+                      </div>
+                    </div>
+                    <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
+                      <div className="text-2xl font-bold text-stone-900">
+                        {recipe.nutrition.fat}
+                      </div>
+                      <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
+                        Fat
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
