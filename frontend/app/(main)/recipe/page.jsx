@@ -374,7 +374,7 @@ function RecipeContent() {
                       </div>
                     </div>
                     <div className="bg-stone-50 p-3 text-center border-2 border-stone-100">
-                       <div className="text-2xl font-bold text-stone-900">
+                      <div className="text-2xl font-bold text-stone-900">
                         {recipe.nutrition.protein}
                       </div>
                       <div className="text-xs text-stone-500 font-bold uppercase tracking-wide">
@@ -397,7 +397,6 @@ function RecipeContent() {
                         Fat
                       </div>
                     </div>
-                    
                   </div>
                 </div>
               )}
@@ -405,7 +404,36 @@ function RecipeContent() {
           </div>
 
           {/* Right Column - Instructions & Tips */}
-          <div className="lg:col-span-2 space-y-6"></div>
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white p-8 border-2 border-stone-200">
+              <h2 className="text-2xl font-bold text-stone-900 mb-6">
+                Step-by-Step Instructions
+              </h2>
+
+              <div>
+                {recipe.instructions.map((step, index) => (
+                  <div
+                    key={step.step}
+                    className={`relative pl-12 pb-8 ${index !== recipe.instructions.length - 1 ? "border-l-2 border-orange-300 ml-5" : "ml-5"}`}
+                  >
+                    {/* Step Number */}
+                    <div className="absolute -left-5 top-0 w-10 h-10 bg-orange-600 text-white flex items-center justify-center font-bold border-2 border-orange-700">
+                      {step.step}
+                    </div>
+                  {/* Title  and Instructions */}
+                    <div>
+                      <h3 className="font-bold text-lg text-stone-900 mb-2">
+                        {step.title}
+                      </h3>
+                      <p className="text-stone-700 font-light mb-3">
+                        {step.instruction}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
