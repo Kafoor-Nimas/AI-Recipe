@@ -31,6 +31,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import { ClockLoader } from "react-spinners";
 import { toast } from "sonner";
 import { RecipePDF } from "@/components/RecipePDF";
+import ProLockedSection from "@/components/ProLockedSection";
 
 function RecipeContent() {
   const searchParams = useSearchParams();
@@ -498,7 +499,7 @@ function RecipeContent() {
                   )}
                 </h2>
 
-                {/* <ProLockedSection
+                <ProLockedSection
                   isPro={recipeData.isPro}
                   lockText="Chef tips are Pro-only"
                   ctaText="Unlock Pro Tips →"
@@ -514,7 +515,7 @@ function RecipeContent() {
                       </li>
                     ))}
                   </ul>
-                </ProLockedSection> */}
+                </ProLockedSection>
               </div>
             )}
 
@@ -535,7 +536,7 @@ function RecipeContent() {
                   use:
                 </p>
 
-                {/* <ProLockedSection
+                <ProLockedSection
                   isPro={recipeData.isPro}
                   lockText="Substitutions are Pro-only"
                 >
@@ -566,7 +567,7 @@ function RecipeContent() {
                       </div>
                     ))}
                   </div>
-                </ProLockedSection> */}
+                </ProLockedSection>
               </div>
             )}
           </div>
