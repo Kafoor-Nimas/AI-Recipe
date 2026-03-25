@@ -345,10 +345,11 @@ Guidelines:
     const cuisine = recipeData.cuisine.toLowerCase();
 
     // Step 3: Fetch image from Unsplash
+    const imageUrl = await fetchRecipeImage(normalizeTitle);
 
     // Step 4: Save generated recipe to database
 
-    return DUMMY_RECIPE_RESPONSE;
+    
   } catch (error) {
     console.error("Error in getOrGenerateRecipe:", error);
     throw new Error(error.message || "Failed to load recipe");
