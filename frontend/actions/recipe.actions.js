@@ -246,6 +246,103 @@ export async function getOrGenerateRecipe(formData) {
     }
 
     // Step 2: Recipe doesn't exist, generate with Gemini
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash-lite",
+    });
+
+    const prompt = `
+You are a professional chef and recipe expert. Generate a detailed recipe for: "${normalizedTitle}"
+
+CRITICAL: The "title" field MUST be EXACTLY: "${normalizedTitle}" (no changes, no additions like "Classic" or "Easy")
+
+Return ONLY a valid JSON object with this exact structure (no markdown, no explanations):
+{
+  "title": "${normalizedTitle}",
+  "description": "Brief 2-3 sentence description of the dish",
+  "category": "Must be ONE of these EXACT values: breakfast, lunch, dinner, snack, dessert",
+  "cuisine": "Must be ONE of these EXACT values: italian, chinese, mexican, indian, american, thai, japanese, mediterranean, french, korean, vietnamese, spanish, greek, turkish, moroccan, brazilian, caribbean, middle-eastern, british, german, portuguese, other",
+  "prepTime": "Time in minutes (number only)",
+  "cookTime": "Time in minutes (number only)",
+  "servings": "Number of servings (number only)",
+  "ingredients": [
+    {
+      "item": "ingredient name",
+      "amount": "quantity with unit",
+      "category": "Protein|Vegetable|Spice|Dairy|Grain|Other"
+    }
+  ],
+  "instructions": [
+    {
+      "step": 1,
+      "title": "Brief step title",
+      "instruction": "Detailed step instruction",
+      "tip": "Optional cooking tip for this step"
+    }
+  ],
+  "nutrition": {
+    "calories": "calories per serving",
+    "protein": "grams",
+    "carbs": "grams",
+    "fat": "grams"
+  },
+  "tips": [
+    "General cooking tip 1",
+    "General cooking tip 2",
+    "General cooking tip 3"
+  ],
+  "substitutions": [
+    {
+      "original": "ingredient name",
+      "alternatives": ["substitute 1", "substitute 2"]
+    }
+  ]
+}
+
+IMPORTANT RULES FOR CATEGORY:
+- Breakfast items (pancakes, eggs, cereal, etc.) → "breakfast"
+- Main meals for midday (sandwiches, salads, pasta, etc.) → "lunch"
+- Main meals for evening (heavier dishes, roasts, etc.) → "dinner"
+- Light items between meals (chips, crackers, fruit, etc.) → "snack"
+- Sweet treats (cakes, cookies, ice cream, etc.) → "dessert"
+
+IMPORTANT RULES FOR CUISINE:
+- Use lowercase only
+- Pick the closest match from the allowed values
+- If uncertain, use "other"
+
+Guidelines:
+- Make ingredients realistic and commonly available
+- Instructions should be clear and beginner-friendly
+- Include 6-10 detailed steps
+- Provide practical cooking tips
+- Estimate realistic cooking times
+- Keep total instructions under 12 steps
+`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    // Parse JSON response
+    let recipeData;
+    try {
+      const cleanText = text
+        .replace(/```json\n?/g, "")
+        .replace(/```\n?/g, "")
+        .trim();
+
+      recipeData = JSON.parse(cleanText);
+    } catch (parseError) {
+      console.error("Failed to parse Gemini response:", text);
+      throw new Error("Failed to generate recipe. Please try again.");
+    }
+
+    // FORCE the title to be our normalized version
+    recipeData.title = normalizedTitle;
+
+    const category = recipeData.category.toLowerCase();
+
+    const cuisine = recipeData.cuisine.toLowerCase();
 
     // Step 3: Fetch image from Unsplash
 
