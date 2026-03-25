@@ -47,13 +47,7 @@
     },
     "category": {
       "type": "enumeration",
-      "enum": [
-        "breakfast",
-        "lunch",
-        "dinner",
-        "snack",
-        "dessert"
-      ]
+      "enum": ["breakfast", "lunch", "dinner", "snack", "dessert"]
     },
     "ingredients": {
       "type": "json",
