@@ -348,13 +348,67 @@ Guidelines:
     const imageUrl = await fetchRecipeImage(normalizeTitle);
 
     // Step 4: Save generated recipe to database
+    const strapiRecipeData = {
+      data: {
+        title: normalizedTitle,
+        description: recipeData.description,
+        cuisine,
+        category,
+        ingredients: recipeData.ingredients,
+        instructions: recipeData.instructions,
+        prepTime: Number(recipeData.prepTime),
+        cookTime: Number(recipeData.cookTime),
+        servings: Number(recipeData.servings),
+        nutrition: recipeData.nutrition,
+        tips: recipeData.tips,
+        substitutions: recipeData.substitutions,
+        imageUrl: imageUrl || "",
+        isPublic: true,
+        author: user.id,
+      },
+    };
 
-    
+    const createRecipeResponse = await fetch(`${STRAPI_URL}/api/recipes`,{
+      method: "POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+      },
+      body: JSON.stringify(strapiRecipeData),
+    })
+
+    if(!createRecipeResponse.ok){
+      const errorText =await createRecipeResponse.text();
+      console.error("Failed to save recipe", errorText);
+      throw new Error("Failed to save recipe to database");
+    }
+
+    const createdRecipe = await createRecipeResponse.json();
+    console.log("✅ Recipe saved to database:", createdRecipe.data.id);
+
+    return {
+      success: true,
+      recipe: {
+        ...recipeData,
+        title: normalizedTitle,
+        category,
+        cuisine,
+        imageUrl: imageUrl || "",
+      },
+      recipeId: createdRecipe.data.id,
+      isSaved: false,
+      fromDatabase: false,
+      recommendationsLimit: isPro ? "unlimited" : 5,
+      isPro,
+      message: "Recipe generated and saved successfully!",
+    };
   } catch (error) {
     console.error("Error in getOrGenerateRecipe:", error);
     throw new Error(error.message || "Failed to load recipe");
   }
 }
+    
+ 
 
 // Save recipe to user's collection (bookmark)
 export async function saveRecipeToCollection(formData) {
