@@ -11,6 +11,7 @@ const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
@@ -146,7 +147,42 @@ function normalizeTitle(title) {
 }
 
 // Helper function to fetch iamge from Unsplash
-async function fetchRecipeImage() {}
+async function fetchRecipeImage() {
+  try {
+    if (!UNSPLASH_ACCESS_KEY) {
+      console.log("UNSPLASH_ACCESS_KEY not set, skipping image fetch");
+      return "";
+    }
+
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(
+        searchQuery,
+      )}&per_page=1&orientation=landscape`,
+      {
+        headers: {
+          Authorization: `client-ID ${UNSPLASH_ACCESS_KEY}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      console.error("Unsplash API error:", response.statusText);
+      return "";
+    }
+
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const photo = data.results[0];
+      return photo.urls.regular;
+    }
+
+    return "";
+  } catch (error) {
+    console.error("Error fetching unsplash image", error);
+    return "";
+  }
+}
 
 // Get or generate recipe details
 export async function getOrGenerateRecipe(formData) {
