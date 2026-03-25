@@ -201,6 +201,49 @@ export async function getOrGenerateRecipe(formData) {
     const normalizedTitle = normalizeTitle(recipeName);
 
     // Step 1: Check if recipe already exists in DB (case-insensitive search)
+    const searchResponse = await fetch(
+      `${STRAPI_URL}/api/recipes?filters[title][$eqi]=${encodeURIComponent(
+        normalizeTitle,
+      )}&populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        },
+        cache: "no-store",
+      },
+    );
+
+    if (searchResponse.ok) {
+      const searchData = await searchResponse.json();
+
+      if (searchData.data && searchData.data.length > 0) {
+        // Check if user has saved this recipe
+        const savedRecipeResponse = await fetch(
+          `${STRAPI_URL}/api/saved-recipes?filters[user][id][$eq]=${user.id}&filters[recipe][id][$eq]=${searchData.data[0].id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+            },
+            cache: "no-store",
+          },
+        );
+
+        let isSaved = false;
+        if (savedRecipeResponse.ok) {
+          const savedData = await savedRecipeResponse.json();
+          isSaved = savedData.data && saveData.data.length > 0;
+        }
+
+        return {
+          success: true,
+          recipe: searchData.data[0],
+          recipeId: searchData.data[0].id,
+          isSaved: isSaved,
+          fromDatabase: true,
+          message: "Recipe loaded from database",
+        };
+      }
+    }
 
     // Step 2: Recipe doesn't exist, generate with Gemini
 
