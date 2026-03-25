@@ -1,7 +1,7 @@
 "use client";
 
-import PricingModal from "@/components/PricingModal";
 import { Button } from "@/components/ui/button";
+import PricingModal from "./PricingModal";
 
 export default function ProLockedSection({
   isPro,
