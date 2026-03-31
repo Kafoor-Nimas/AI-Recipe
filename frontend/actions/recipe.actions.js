@@ -242,6 +242,7 @@ export async function getOrGenerateRecipe(formData) {
           recipeId: searchData.data[0].id,
           isSaved: isSaved,
           fromDatabase: true,
+          isPro,
           message: "Recipe loaded from database",
         };
       }
@@ -594,32 +595,33 @@ export async function getSavedRecipes() {
 
     // Fetch saved recipes with populated recipe data
     const response = await fetch(
-      `${STRAPI_URL}/api/saved-recipes?filters[user][id][$eq]=${user.id}&populate[recipe][populate]=*&sort=savedAt:desc`,{
-        headers:{
-          Authorization:`Bearer ${STRAPI_API_TOKEN}`,
+      `${STRAPI_URL}/api/saved-recipes?filters[user][id][$eq]=${user.id}&populate[recipe][populate]=*&sort=savedAt:desc`,
+      {
+        headers: {
+          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
         },
-        cache: "no-store"
+        cache: "no-store",
       },
-    )
+    );
 
-    if(!response.ok){
-      throw new Error("failed to fetch saved recipes")
+    if (!response.ok) {
+      throw new Error("failed to fetch saved recipes");
     }
 
     const data = await response.json();
 
     // Extract recipes from saved-recipes relations
     const recipes = data.data
-    .map((savedRecipe)=> savedRecipe.recipe).filter(Boolean); //Remove any null recipes
+      .map((savedRecipe) => savedRecipe.recipe)
+      .filter(Boolean); //Remove any null recipes
 
     return {
-      success:true,
+      success: true,
       recipes,
-      count:recipes.length
-    }
+      count: recipes.length,
+    };
   } catch (error) {
-    console.error("Error fetching saved recipes:",error)
-    throw new Error(error.message || "Failed to load saved recipes")
+    console.error("Error fetching saved recipes:", error);
+    throw new Error(error.message || "Failed to load saved recipes");
   }
 }
-
