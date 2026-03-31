@@ -283,6 +283,29 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
                   </CardDescription>
                 )}
               </CardHeader>
+
+              {(data.prepTime || data.cookTime || data.servings) && (
+                <CardContent>
+                  <div className="flex gap-4 text-sm text-stone-500 pt-4">
+                    {(data.prepTime || data.cookTime) && (
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        <span>
+                          {parseInt(data.prepTime || 0) +
+                            parseInt(data.cookTime || 0)}{" "}
+                          mins
+                        </span>
+                      </div>
+                    )}
+                    {data.servings && (
+                      <div className="flex items-center gap-1">
+                        <Users className="w-4 h-4" />
+                        <span>{data.servings} servings</span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              )}
             </div>
           </div>
         </Card>
