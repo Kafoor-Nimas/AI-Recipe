@@ -1,6 +1,7 @@
 "use client";
 
 import { getSavedRecipes } from "@/actions/recipe.actions";
+import RecipeCard from "@/components/RecipeCard";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { Bookmark, ChefHat, Loader2 } from "lucide-react";
@@ -33,6 +34,20 @@ const SavedRecipePage = () => {
             </p>
           </div>
         </div>
+
+        {/* Render all recipes */}
+        {/* Recipes Grid */}
+        {!loading && recipes.length > 0 && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.documentId}
+                recipe={recipe}
+                variant="list"
+              />
+            ))}
+          </div>
+        )}
 
         {/* Loading State */}
         {loading && (
