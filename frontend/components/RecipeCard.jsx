@@ -231,7 +231,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
           <div className="flex flex-col md:flex-row">
             {/* Image (if available) */}
             {data.showImage ? (
-              <div className="relative w-full md:w-48 aspect-video md:aspect-square flex-shrink-0">
+              <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0">
                 <Image
                   src={data.image}
                   alt={data.title}
@@ -242,7 +242,7 @@ const RecipeCard = ({ recipe, variant = "default" }) => {
               </div>
             ) : (
               //    Fallback gradient when no image
-              <div className="relative w-full md:w-48 aspect-video md:aspect-square flex-shrink-0 bg-linear-to-br from-orange-400 to-amber-400 flex items-center justify-center">
+              <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0 bg-linear-to-br from-orange-400 to-amber-400 flex items-center justify-center">
                 <ChefHat className="w-12 h-12 text-white/30" />
               </div>
             )}
