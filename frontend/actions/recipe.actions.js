@@ -544,7 +544,6 @@ export async function removeRecipeFromCollection(formData) {
   }
 }
 
-// // Get user's saved recipes
 // export async function getSavedRecipes() {
 //   try {
 //     const user = await checkUser();
@@ -623,3 +622,4 @@ export async function getSavedRecipes() {
     throw new Error(error.message || "Failed to load saved recipes")
   }
 }
+
