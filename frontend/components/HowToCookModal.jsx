@@ -9,8 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ChefHat } from "lucide-react";
+import { ChefHat, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 const HowToCookModal = () => {
   const router = useRouter();
@@ -22,6 +23,18 @@ const HowToCookModal = () => {
     if (!open) {
       setRecipeName(""); //Reset input when closing
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!recipeName.trim()) {
+      toast.error("Please enter a recipe name");
+      return;
+    }
+
+    router.push(`/recipe?cook=${encodeURIComponent(recipeName.trim())}`);
+    handleOpenChange(false); //Close modal after submission
   };
 
   return (
@@ -45,6 +58,56 @@ const HowToCookModal = () => {
             cooking process
           </DialogDescription>
         </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="mt-4 space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-stone-700 mb-2">
+              What would you like to cook?
+            </label>
+
+            <div className="relative">
+              <input
+                type="text"
+                value={recipeName}
+                onChange={(e) => setRecipeName(e.target.value)}
+                className="w-full px-4 py-3 pr-12 border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 text-stone-900 placeholder:text-stone-400"
+                placeholder="e.g., Chicken Biriyani, Chocolate Cake, Pasta Carbonara"
+                autoFocus
+              />
+              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
+            </div>
+          </div>
+
+          <div className="bg-orange-50 rounded-xl p-4 border border-orange-100">
+            <h4 className="text-sm font-semibold text-orange-900 mb-2">
+              💡 Try These:
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {["Butter Chicken", "Chocolate Brownies", "Caesar salad"].map(
+                (example) => (
+                  <button
+                    key={example}
+                    type="button"
+                    onClick={() => setRecipeName(example)}
+                    className="px-3 py-1 bg-white text-orange-700 border border-orange-200 rounded-full text-sm hover:bg-orange-100 transition-colors"
+                  >
+                    {example}
+                  </button>
+                ),
+              )}
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={!recipeName.trim()}
+            variant="primary"
+            className={"flex-1 w-full h-12"}
+          >
+            <ChefHat className="w-5 h-5 mr-2" />
+            Get Recipe
+          </Button>
+        </form>
       </DialogContent>
     </Dialog>
   );
