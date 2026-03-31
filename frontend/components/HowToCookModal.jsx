@@ -1,4 +1,6 @@
-import React from 'react'
+"use client";
+
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,23 +8,46 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
+import { ChefHat } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const HowToCookModal = () => {
-  return (
-   <Dialog>
-  <DialogTrigger>Open</DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Are you absolutely sure?</DialogTitle>
-      <DialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>
-  )
-}
+  const router = useRouter();
+  const [recipeName, setRecipeName] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
-export default HowToCookModal
+  const handleOpenChange = (open) => {
+    setIsOpen(open);
+    if (!open) {
+      setRecipeName(""); //Reset input when closing
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <button className="hover:text-orange-600 transition-colors flex items-center gap-1.5 text-sm font-medium text-stone-600">
+          <ChefHat className="w-4 h-4" />
+          How to Cook?
+        </button>
+      </DialogTrigger>
+      <DialogContent className={"max-w-lg"}>
+        <DialogHeader>
+          <DialogTitle
+            className={"text-2xl font-serif font-bold flex items-center gap-2"}
+          >
+            <ChefHat className="w-6 h-6 text-orange-600" />
+            How to Cook?
+          </DialogTitle>
+          <DialogDescription>
+            Enter any recipe name and our AI chef will guide you through the
+            cooking process
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default HowToCookModal;
