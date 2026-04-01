@@ -61,7 +61,7 @@ An AI-powered recipe platform that scans your pantry, suggests recipes based on 
 │   ├── arcjet.js             # Rate limit configurations
 │   ├── checkUser.js          # User sync between Clerk & Strapi
 │   └── data.js               # Static data & helper functions
-└── frontend/                 # Strapi backend
+└── backend/                 # Strapi backend
 ```
 
 ---
@@ -81,31 +81,35 @@ An AI-powered recipe platform that scans your pantry, suggests recipes based on 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/servd.git
+git clone https://github.com/Kafoor-Nimas/AI-Recipe.git
 cd servd
 ```
 
 ### 2. Install Frontend Dependencies
 
 ```bash
+cd frontend
 npm install
 ```
 
 ### 3. Install Strapi Dependencies
 
 ```bash
-cd frontend
+cd backend
 npm install
 ```
 
 ### 4. Configure Environment Variables
 
-Create a `.env.local` file in the root of your Next.js project:
+Create a `.env` file in the frontend of your Next.js project:
 
 ```env
 # Strapi
 NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 STRAPI_API_TOKEN=your_strapi_api_token
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
 # Clerk
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
@@ -121,9 +125,14 @@ UNSPLASH_ACCESS_KEY=your_unsplash_access_key
 ARCJET_KEY=your_arcjet_key
 ```
 
-Configure Strapi's `.env` file:
+Configure Strapi's `.env` file in the backend of your Next.js project:
 
 ```env
+
+# Server
+HOST=0.0.0.0
+PORT=1337
+
 DATABASE_CLIENT=postgres
 DATABASE_HOST=your_neon_host
 DATABASE_PORT=5432
@@ -136,7 +145,7 @@ DATABASE_SSL=true
 ### 5. Start Strapi Backend
 
 ```bash
-cd frontend
+cd backend
 npm run develop
 ```
 
@@ -145,6 +154,7 @@ Strapi will be available at `http://localhost:1337/admin`
 ### 6. Start Next.js Frontend
 
 ```bash
+cd frontend
 npm run dev
 ```
 
@@ -174,12 +184,6 @@ The app will be available at `http://localhost:3000`
 
 ## 🚢 Deployment
 
-### Deploy Strapi (Railway / Render)
-
-1. Push your Strapi project to GitHub
-2. Connect to Railway or Render
-3. Add your Neon DB environment variables
-4. Deploy
 
 ### Deploy Next.js (Vercel)
 
@@ -196,11 +200,21 @@ Make sure your `next.config.js` includes:
 
 ```js
 images: {
-  remotePatterns: [
-    { hostname: "images.unsplash.com" },
-    { hostname: "your-strapi-domain.com" },
-  ],
-},
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.themealdb.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+    ],
+  },
 ```
 
 ---
@@ -215,11 +229,6 @@ images: {
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
 
 ## 🙏 Acknowledgements
 
