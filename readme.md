@@ -10,7 +10,7 @@ An AI-powered recipe platform that scans your pantry, suggests recipes based on 
 
 ![Recipe Page](frontend/public/recipe.png)
 
-![Recipe-Category Search](frontend/public/recipe-category.png)
+![Recipe-Category Search](frontend/public/recipes-category.png)
 
 ![AddToPantry Page](frontend/public/AddToPantry.png)
 
