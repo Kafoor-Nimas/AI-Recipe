@@ -4,6 +4,18 @@ An AI-powered recipe platform that scans your pantry, suggests recipes based on 
 
 ---
 
+## 📸 Screenshots
+
+![Home Page](frontend/public/home.png)
+
+![Recipe Page](frontend/public/recipe.png)
+
+![Recipe-Category Search](frontend/public/recipe-category.png)
+
+![AddToPantry Page](frontend/public/AddToPantry.png)
+
+![recipes Page](frontend/public/recipes.png)
+
 ## 🚀 Tech Stack
 
 | Technology           | Purpose                                 |
@@ -184,7 +196,6 @@ The app will be available at `http://localhost:3000`
 
 ## 🚢 Deployment
 
-
 ### Deploy Next.js (Vercel)
 
 1. Push your project to GitHub
@@ -228,7 +239,6 @@ images: {
 5. Open a Pull Request
 
 ---
-
 
 ## 🙏 Acknowledgements
 
