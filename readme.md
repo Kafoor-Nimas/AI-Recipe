@@ -250,6 +250,21 @@ images: {
 
 ---
 
+## 🌐 Live Demo
+
+[View Live Demo](https://ai-recipe-servd.vercel.app)
+
+---
+
+## 👨‍💻 Author
+
+**Nimas Kafoor**
+
+- 🌐 Portfolio: [nimas-portfolio.vercel.app](https://nimas-portfolio.vercel.app/)
+- 💼 LinkedIn: [linkedin.com/in/nimas-kafoor](https://www.linkedin.com/in/nimas-kafoor)
+- 🐙 GitHub: [github.com/Kafoor-Nimas](https://github.com/Kafoor-Nimas)
+- 📧 Email: [nimaskafoor@gmail.com](mailto:nimaskafoor@gmail.com)
+
 ## 🙏 Acknowledgements
 
 - [Google Gemini](https://ai.google.dev) for AI-powered recipe generation
