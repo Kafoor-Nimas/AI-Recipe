@@ -6,15 +6,25 @@ An AI-powered recipe platform that scans your pantry, suggests recipes based on 
 
 ## 📸 Screenshots
 
+### Home Page
+
 ![Home Page](frontend/public/home.png)
+
+### Recipe Page
 
 ![Recipe Page](frontend/public/recipe.png)
 
+### Recipe-Category Page
+
 ![Recipe-Category Search](frontend/public/recipes-category.png)
+
+### AddToPantry Page
 
 ![AddToPantry Page](frontend/public/AddToPantry.png)
 
-![recipes Page](frontend/public/recipes.png)
+### Recipes Page
+
+![Recipes Page](frontend/public/recipes.png)
 
 ## 🚀 Tech Stack
 
